@@ -1,0 +1,351 @@
+<!-- Affichage des annulations possible en cas de drag/drop et copier/coller-->
+<div id="annulerCopy{{ Z }}" class="bande" style="display: none">
+  <button (click)="clickCopy()" size="small" class="boutonBande" nbButton>
+    Annuler
+  </button>
+</div>
+
+<div id="annulerSwap{{ Z }}" class="bande" style="display: none">
+  <button (click)="clickSwap()" size="small" class="boutonBande" nbButton>
+    Annuler
+  </button>
+</div>
+
+<nb-card class="row" *ngIf="equipeId">
+  <!-- Première colonne : nom de l'équipe et noms des collaborateurs -->
+  <nb-card-body class="row">
+    <nb-card-body class="col-sm-3 col-md-2">
+      <table
+        *ngIf="equipe != undefined && equipe.collaborateursId != undefined"
+      >
+        <h2>
+          <div class="test">{{ equipe.name }}</div>
+          <a routerLink="/detail/{{ equipe.id }}"
+            ><nb-icon icon="edit-2-outline"></nb-icon
+          ></a>
+          <button size="small" nbButton ghost type="button" (click)="open()">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </h2>
+
+        <tr
+          class="grid-item-collaborateur"
+          *ngFor="let collaborateur of equipe.collaborateursId; let i = index"
+        >
+          <h3>{{ collaborateursNamesList[i] }}</h3>
+        </tr>
+      </table>
+    </nb-card-body>
+
+    <!-- Planning : le planning se répète le nombre de fois qu'il y a de semaines, c'est-à-dire au plus 4. (calendrierArray.length) -->
+    <nb-card-body class="col-sm-9 col-md-10">
+      <div class="col-sm-12 col-md-12">
+        <div
+          class="grid-superContainer"
+          *ngIf="equipe != undefined && equipe.collaborateursId != undefined"
+        >
+          <div *ngFor="let calendrierForm of calendrierArray; let k = index">
+            <div *ngIf="k < weekNumber">
+              <form
+                novalidate
+                (ngSubmit)="onSubmit(calendrierForm)"
+                #formDirective="ngForm"
+                [formGroup]="calendrierForm"
+              >
+                {{ calendrierForm.get("days[0]") }}
+                <div class="grid-container">
+                  <!-- Deuxième colonne : visualisation des contraintes des collaborateurs -->
+                  <!-- Menu déroulé -->
+                  <div *ngIf="showResume[k]; else elseBlock">
+                    <div class="grid-container-show-resume">
+                      <div class="grid-container-show-resume">
+                        <button
+                          size="small"
+                          status="primary"
+                          nbButton
+                          ghost
+                          type="button"
+                          (click)="showResumeFun(k)"
+                        >
+                          <nb-icon icon="arrow-ios-downward-outline"></nb-icon>
+                        </button>
+                      </div>
+                      <div
+                        *ngFor="
+                          let creneau of contraintesCreneauxList;
+                          let j = index
+                        "
+                        class="grid-container-row"
+                      >
+                        <div class="grid-item-name">{{ creneau }}</div>
+
+                        <div
+                          class="grid-item"
+                          *ngFor="
+                            let collaborateur of equipe.collaborateursId;
+                            let i = index
+                          "
+                        >
+                          <div id="{{ creneau }}{{ i }}{{ k }}{{ Z }}"></div>
+                          {{ setTotal(creneau, i, k, contraintesCList[i][j]) }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Menu enroulé -->
+                  <ng-template #elseBlock
+                    ><div class="grid-container-show-resume">
+                      <button
+                        size="small"
+                        nbButton
+                        ghost
+                        status="primary"
+                        type="button"
+                        (click)="showResumeFun(k)"
+                      >
+                        <nb-icon icon="arrow-ios-upward-outline"></nb-icon>
+                      </button></div
+                  ></ng-template>
+
+                  <!-- Partie planning -->
+                  <div class="grid-container">
+                    <!-- Troisième colonne : contraintes de l'équipe, list des noms des contraintes -->
+                    <div>
+                      <!-- Saubegarde du calendrier -->
+                      <div class="grid-item-empty">
+                        <button
+                          class="valider"
+                          nbButton
+                          ghost
+                          size="small"
+                          status="primary"
+                          [disabled]="!calendrierForm.touched"
+                          type="submit"
+                        >
+                          <nb-icon icon="save-outline"></nb-icon>
+                        </button>
+
+                        <!-- Boutons pour les copiers/collés -->
+                        <button
+                          type="button"
+                          class="buttonCCempty"
+                          id="week{{ k }}{{ Z }}"
+                          (click)="selectWeek(k)"
+                        >
+                          <nb-icon icon="copy-outline"></nb-icon>
+                        </button>
+                      </div>
+                      <div
+                        *ngFor="
+                          let collaborateur of equipe.collaborateursId;
+                          let j = index
+                        "
+                      >
+                        <div *ngIf="j != 0" class="grid-item-CC">
+                          <button
+                            type="button"
+                            class="buttonCCcollab"
+                            id="collab{{ k }}{{ j }}{{ Z }}"
+                            (click)="selectCollab(k, j)"
+                          >
+                            <nb-icon icon="copy-outline"></nb-icon>
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Menu déroulé -->
+                      <div *ngIf="showContraintes[k]; else elseBlock1">
+                        <div class="grid-item-show">
+                          <button
+                            size="small"
+                            status="primary"
+                            nbButton
+                            ghost
+                            type="button"
+                            (click)="showContrainteFun(k)"
+                          >
+                            <nb-icon
+                              class="iconCCshow"
+                              icon="arrow-ios-downward-outline"
+                            ></nb-icon>
+                          </button>
+
+                          <button
+                            type="button"
+                            class="buttonCCshow"
+                            id="collab{{ k }}0{{ Z }}"
+                            (click)="selectCollab(k, 0)"
+                          >
+                            <nb-icon icon="copy-outline"></nb-icon>
+                          </button>
+                        </div>
+                        <div
+                          *ngFor="
+                            let creneau of contraintesHList;
+                            let j = index
+                          "
+                        >
+                          <div class="grid-item-prompt-contrainteH">
+                            {{ creneau[0] }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Menu enroulé -->
+                      <ng-template #elseBlock1
+                        ><div class="grid-item-show">
+                          <button
+                            size="small"
+                            nbButton
+                            ghost
+                            status="primary"
+                            type="button"
+                            (click)="showContrainteFun(k)"
+                          >
+                            <nb-icon
+                              class="iconCCshow"
+                              icon="arrow-ios-upward-outline"
+                            ></nb-icon>
+                          </button>
+                          <button
+                            type="button"
+                            class="buttonCCshow"
+                            id="collab{{ k }}0{{ Z }}"
+                            (click)="selectCollab(k, 0)"
+                          >
+                            <nb-icon icon="copy-outline"></nb-icon>
+                          </button></div
+                      ></ng-template>
+                    </div>
+
+                    <!-- Quatrième partie : cases du planning -->
+                    <div *ngFor="let day of week[k]; let i = index">
+                      <!-- Ligne des jours -->
+                      <div *ngIf="semaine[(i + 1) % 7]">
+                        <div class="grid-item">
+                          {{ giveDay(day) }}
+                          {{ giveDate(day) }}
+                          <button
+                            type="button"
+                            class="buttonCC"
+                            id="button{{ k }}{{ i }}{{ Z }}"
+                            (click)="selectDays(k, i)"
+                          >
+                            <nb-icon icon="copy-outline"></nb-icon>
+                          </button>
+                        </div>
+                        <div
+                          *ngFor="
+                            let collaborateur of equipe.collaborateursId;
+                            let j = index
+                          "
+                          formArrayName="days"
+                        >
+                          <div
+                            class="grid-item calendrier"
+                            [formGroupName]="
+                              i * equipe.collaborateursId.length + j
+                            "
+                            id="drag{{ j }}{{ k }}{{ i }}{{ Z }}"
+                            draggable="true"
+                            (dragstart)="drag($event, j, k, i)"
+                            (dragover)="allowDrop($event, j, k, i)"
+                            (dragleave)="leaveDrop($event, j, k, i)"
+                          >
+                            <select
+                              id="color{{ j }}{{ k }}{{ i }}{{ Z }}"
+                              class="form-control select"
+                              formControlName="creneau"
+                              [disabled]="true"
+                            >
+                              <option
+                                id="{{ creneau[0] }}{{ j }}{{ k }}{{ i }}{{
+                                  Z
+                                }}"
+                                *ngFor="let creneau of creneauList"
+                                [ngStyle]="{
+                                  'background-color': creneau[1]
+                                }"
+                                [value]="creneau"
+                                (click)="onClickColor(creneau, i, j, k, day)"
+                                [disabled]="
+                                  calendrierForm.value['days'][
+                                    i * equipe.collaborateursId.length + j
+                                  ]['locked']
+                                "
+                              >
+                                {{ creneau[0] }}
+                              </option>
+                            </select>
+
+                            <button
+                              type="button"
+                              class="buttonLock"
+                              size="tiny"
+                              id="button{{ j }}{{ k }}{{ i }}{{ Z }}"
+                              (click)="lock(j, k, i)"
+                            >
+                              <nb-icon
+                                size="tiny"
+                                id="lock{{ j }}{{ k }}{{ i }}{{ Z }}"
+                                icon="lock-outline"
+                              ></nb-icon>
+                            </button>
+
+                            <!-- Balises pour le drag/drop-->
+                            <div
+                              style="display: none"
+                              id="drop{{ j }}{{ k }}{{ i }}{{ Z }}"
+                            >
+                              <div
+                                id="copy{{ j }}{{ k }}{{ i }}{{ Z }}"
+                                class="grid-item-drag"
+                                (drop)="dropCopy($event, j, k, i)"
+                                (dragover)="allowCopy($event, j, k, i)"
+                                (dragleave)="leaveCopy($event, j, k, i)"
+                              >
+                                <nb-icon icon="copy-outline"></nb-icon>
+                              </div>
+                              <div
+                                id="swap{{ j }}{{ k }}{{ i }}{{ Z }}"
+                                class="grid-item-drag"
+                                (drop)="dropSwap($event, j, k, i)"
+                                (dragover)="allowSwap($event, j, k, i)"
+                                (dragleave)="leaveSwap($event, j, k, i)"
+                              >
+                                <nb-icon icon="swap-outline"></nb-icon>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Cinquième partie : nombre de collaborateurs par shift, valeur des contraintes-->
+                        <div *ngIf="showContraintes[k]">
+                          <div
+                            *ngFor="
+                              let creneau of contraintesHList;
+                              let j = index
+                            "
+                          >
+                            <div class="grid-item-prompt-contrainte">
+                              <div
+                                class="element-item-prompt-contrainte left"
+                                id="time{{ k }}{{ i }}{{ j }}{{ Z }}"
+                              >
+                                Chargement time{{ k }}{{ i }}{{ j }}{{ Z }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card-body>
+</nb-card>

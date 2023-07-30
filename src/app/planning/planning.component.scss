@@ -1,0 +1,332 @@
+table, td {
+  border: 1px solid rgb(242, 242, 243);
+  z-index: 9999;
+}
+
+tr {
+  height:20px;
+  border: 1px solid red;
+}
+
+.tr1 {
+  height: 10px;
+}
+
+a {
+  border: 1px solid black;
+}
+
+h2 {
+  border: 1px solid black;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(60, 130, 200);
+  font-size: 15px; 
+  //margin: 0;
+  padding-left: 5px;
+  //padding-top: 0px;
+  padding-right: 5px;
+  //padding-bottom: 15px;
+ // text-align: center;
+}
+
+h3 {
+  border: 1px solid blue;
+  height: 20px;
+  color: rgb(60, 130, 200);
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+
+.valider {
+  //margin-top: 5px;
+  //float: left;
+  //justify-content: space-between;
+  background-color: white;
+  color: #a0acc6;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+
+/** Copier/coller et drag/drop */
+.bande {
+  background-color: rgb(240, 240, 240);
+  padding: 5px;
+  //display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  border: 1px solid #a0acc6;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  left: 40%;
+  width: 300px;
+  z-index: 9999; 
+}
+
+.boutonBande {
+  border-radius: 0;
+}
+
+.buttonLock {
+  background-color: white;
+  color: #e7e8ea;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  float: right;
+  float: top;
+  padding-top: 0;
+  margin: 0;
+  max-width: 19px;
+  max-height: 19px;
+  
+}
+
+.buttonCC {
+  background-color: white;
+  color: rgb(223, 224, 235);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  float: right;
+}
+
+.buttonCCempty {
+  background-color: white;
+  color: rgb(223, 224, 235);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  float: right;
+  margin-top: 2px;
+}
+
+.buttonCCcollab {
+  background-color: white;
+  color: rgb(223, 224, 235);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  float: right;
+  margin-top: 12px;
+}
+
+.buttonCCshow {
+  background-color: white;
+  color: rgb(223, 224, 235);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  float: right;
+  margin-top: 12px;
+}
+
+/** Gestion des containers */
+
+// Première ligne nom des collaborateurs
+/*h2 {
+  border: 1px solid black;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(60, 130, 200);
+  font-size: 15px; 
+  //margin: 0;
+  padding-left: 5px;
+  //padding-top: 0px;
+  padding-right: 5px;
+  //padding-bottom: 15px;
+ // text-align: center;
+}
+
+.grid-item-collaborateur {
+  border: 1px solid rgba(197, 194, 194, 0.8);
+  height: 35px;
+}
+
+
+.test {
+  border: 1px solid green;
+  height: 10px;
+  display: absolute;
+  bottom: 10px;
+}
+
+h3 {
+  color: rgb(60, 130, 200);
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}*/
+
+
+
+// Planning
+.grid-superContainer {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto;
+}
+
+.grid-container {
+  display: inline-grid;
+  justify-content: space-evenly;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto; 
+}
+
+// Affichage des jours
+.grid-item {
+  color: rgb(60, 130, 200);
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding: 2px;
+  font-size: 11px;
+  text-align: center;
+  min-width: 100px;
+  max-width: 115px;
+  font-weight: bold;
+}
+
+.calendrier {
+  display: flex;
+}
+
+.grid-item-drag {
+  color: rgb(223, 224, 235);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 45px;
+}
+
+.select {
+  //color: white;
+  font-size: 11px;
+
+}
+
+// Contraintes de l'équipes
+.grid-item-empty {
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding-bottom: 24px;
+  min-width: 65px;
+}
+
+.grid-item-CC {
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding-bottom: 34px;
+}
+
+.grid-item-show {
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding-bottom: 2.5px;
+}
+
+.grid-item-prompt-contrainteH {
+  color: rgb(60, 130, 200);
+  border-left: 2px solid rgb(114, 149, 255);
+  border-bottom: 1px solid rgb(235, 233, 233, 0.8);
+  border-right: 1px solid rgb(235, 233, 233, 0.8);
+  border-top: 1px solid rgb(235, 233, 233, 0.8);
+  padding: 2px;
+  font-size: 11px;
+  text-align: center;
+  min-width: 125px;
+  font-weight: bold;
+  display: flex;
+  justify-content: left;
+}
+
+.grid-item-prompt-contrainteC {
+  color: rgb(60, 130, 200);
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding: 2px;
+  font-size: 11px;
+  text-align: center;
+  min-width: 125px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.grid-item-prompt-contrainte {
+  color: rgb(60, 130, 200);
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding: 2px;
+  font-size: 11px;
+  text-align: center;
+  //min-width: 125px;
+  //max-width: 115px;
+  //max-height: 20px;
+  font-weight: bold;  
+  //display: inline-grid;
+  //grid-template-columns: auto auto;
+  //justify-content: space-between;
+  min-width: 100px;
+  max-width: 115px;
+}
+
+.element-item-prompt-contrainte {
+  width: 40px;
+  height: 31.5px;
+  display: inline;
+}
+
+.right {
+  position: relative;
+  left: 5px;
+}
+
+.left {
+  position: relative;
+  right: 5px;
+}
+
+.buttonContrainteH {
+  margin-top: 8px;
+}
+
+.buttonContrainteC {
+  margin-top: 8px;
+}
+
+// Resume de l'équipe
+.grid-container-show-resume {
+  display: grid;
+  border: 1px solid rgba(197, 194, 194, 0.8);
+  justify-content: space-evenly;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+}
+
+.grid-container-row {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.grid-item-name {
+  color: rgb(60, 130, 200);
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  padding: 5px;
+  font-size: 11px;
+  text-align: center;
+  min-width: 90px;
+  font-weight: bold;
+  height: 30px;
+  display: flex;
+}
+
+

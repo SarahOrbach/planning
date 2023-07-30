@@ -1,0 +1,43 @@
+.creer {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    float: left;
+}
+
+.titre {
+    color: rgb(160, 160, 160);
+}
+
+.contenu {
+    background-color: rgb(240, 240, 240);
+    border-radius: 0;
+}
+
+/** Gestion des containers */
+.grid-container10 {
+    display: grid;
+    //justify-content: space-between;
+    grid-template-columns: 110px auto auto auto auto auto auto auto auto auto;
+}
+
+.grid-item {
+    padding: 5px;
+    font-size: 11px;
+    text-align: center;
+    min-width: 150px;
+}
+
+.number {
+    max-width: 50px;
+    display: flex;
+    float: left;
+}
+
+nb-card {
+    margin: 0px;
+    border-top: 3px solid rgba(165, 195, 245);
+}

@@ -1,0 +1,42 @@
+<form *ngIf="auth()" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+  <nb-card>
+    <nb-card-header> Authentification</nb-card-header>
+    <nb-card-body
+      ><br />
+      <nb-form-field class="element field">
+        <nb-icon nbSuffix icon="person-outline"></nb-icon>
+        <input nbInput type="text" class="input" formControlName="name" />
+      </nb-form-field>
+
+      <nb-form-field class="element field">
+        <input
+          class="input"
+          [type]="getInputType()"
+          class="input"
+          formControlName="password"
+          nbInput
+        />
+        <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+          <nb-icon
+            [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+            pack="eva"
+            [attr.aria-label]="showPassword ? 'hide password' : 'show password'"
+          >
+          </nb-icon>
+        </button> </nb-form-field
+      ><br />
+
+      <a class="element" routerLink="/signup">Créer un compte</a><br />
+      <br />
+      <button
+        nbButton
+        class="creer element"
+        status="basic"
+        [disabled]="!loginForm.valid"
+        type="submit"
+      >
+        Se connecter</button
+      ><br /><br />
+    </nb-card-body>
+  </nb-card>
+</form>

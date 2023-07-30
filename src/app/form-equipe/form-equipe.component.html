@@ -1,0 +1,677 @@
+<nb-card *ngIf="afficher()">
+  <nb-card-header> <h2>Nouvelle equipe</h2> </nb-card-header>
+
+  <nb-card-body class="row">
+    <form
+      novalidate
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit(equipeForm.value)"
+      [formGroup]="equipeForm"
+    >
+      <!-- Primière partie : informations générales, nom et collaborateurs assignés-->
+      <div class="row" id="card">
+        <div class="col-sm-6 col-md-3">
+          <label class="titre">Nom de l'équipe *</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control contenu"
+            [ngClass]="{
+              'is-invalid': getControls(equipeForm, 'name')
+            }"
+          />
+          <div class="invalid-feedback">
+            <span> Veuillez donner un nom à l'équipe. </span>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <label class="titre" for="collabs">Collaborateurs assignés</label>
+          <nb-select
+            multiple
+            class="form-control contenu"
+            name="collabs"
+            formControlName="collaborateursId"
+          >
+            <nb-option
+              *ngFor="let name of collaborateursNamesList; let i = index"
+              value="{{ collaborateursIdList[i] }}"
+              >{{ name }}</nb-option
+            >
+          </nb-select>
+        </div>
+      </div>
+
+      <!-- Seconde partie : ajout de créneaux horaires -->
+      <div class="row" id="card" formArrayName="creneauHours">
+        <div class="header"><h3>Shift Horaire</h3></div>
+
+        <div *ngIf="creneauList.controls.length > 0">
+          <div *ngFor="let creneau of creneauList.controls; let i = index">
+            <div class="col-sm-12 col-md-12" [formGroupName]="i">
+              <div class="row">
+                <div class="col-sm-1 col-md-1">
+                  <button
+                    class="delete"
+                    size="small"
+                    nbButton
+                    ghost
+                    status="basic"
+                    type="button"
+                    (click)="removeCreneauHours(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+                <div class="col-sm-11 col-md-11 container">
+                  <div class="grid-item">
+                    <label class="titre" attr.for="cBegin + {{ i }}"
+                      >Début *</label
+                    >
+                    <input
+                      type="time"
+                      id="cBegin + {{ i }}"
+                      formControlName="cBegin"
+                      class="form-control contenu"
+                      (keyup)="
+                        checkAndMoveToNextField(
+                          creneau,
+                          'cBegin',
+                          'cEnd + ' + i
+                        )
+                      "
+                      [ngClass]="{
+                        'is-invalid': getControls(creneau, 'cBegin')
+                      }"
+                    />
+                    <div class="invalid-feedback">
+                      <span>
+                        Veuillez renseigner le début du créneau horaire.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="iconPosition">
+                    <nb-icon icon="minus-outline"></nb-icon>
+                  </div>
+
+                  <div class="grid-item">
+                    <label class="titre" attr.for="cEnd + {{ i }}">Fin *</label>
+                    <input
+                      type="time"
+                      id="cEnd + {{ i }}"
+                      formControlName="cEnd"
+                      class="form-control contenu"
+                      (keyup)="
+                        checkAndMoveToNextField(
+                          creneau,
+                          'cEnd',
+                          'cPause + ' + i
+                        )
+                      "
+                      [ngClass]="{
+                        'is-invalid': getControls(creneau, 'cEnd')
+                      }"
+                    />
+                    <div class="invalid-feedback">
+                      <span>
+                        Veuillez renseigner la fin du créneau horaire.
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="grid-item">
+                    <label class="titre" attr.for="cColor + {{ i }}"
+                      >Couleur</label
+                    >
+                    <div id="cColor + {{ i }}">
+                      <button
+                        type="button"
+                        id="buttoncColor{{ i }}"
+                        class="colorButton"
+                        (click)="display(i, 'cColor')"
+                      >
+                        <nb-icon
+                          id="icon1cColor{{ i }}"
+                          icon="arrow-ios-upward-outline"
+                        ></nb-icon>
+                        <nb-icon
+                          style="display: none"
+                          id="icon2cColor{{ i }}"
+                          icon="arrow-ios-downward-outline"
+                        ></nb-icon>
+                      </button>
+                    </div>
+                    <table
+                      id="tablecColor{{ i }}"
+                      style="width: 100%; display: none"
+                    >
+                      <tr>
+                        <td *ngFor="let color of colors1; let l = index">
+                          <button
+                            type="button"
+                            class="color"
+                            [ngClass]="setCouleur(l, 1)"
+                            (click)="onClickCouleur(color, i, 'cColor')"
+                          ></button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td *ngFor="let color of colors2; let l = index">
+                          <button
+                            type="button"
+                            class="color"
+                            [ngClass]="setCouleur(l, 2)"
+                            (click)="onClickCouleur(color, i, 'cColor')"
+                          ></button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td *ngFor="let color of colors3; let l = index">
+                          <button
+                            type="button"
+                            class="color"
+                            [ngClass]="setCouleur(l, 3)"
+                            (click)="onClickCouleur(color, i, 'cColor')"
+                          ></button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td *ngFor="let color of colors4; let l = index">
+                          <button
+                            type="button"
+                            class="color"
+                            [ngClass]="setCouleur(l, 4)"
+                            (click)="onClickCouleur(color, i, 'cColor')"
+                          ></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div class="grid-item">
+                    <label class="titre" attr.for="cPause + {{ i }}"
+                      >Pause (en min.)</label
+                    >
+                    <input
+                      type="text"
+                      id="cPause + {{ i }}"
+                      formControlName="cPause"
+                      class="form-control contenu"
+                      [ngClass]="{
+                        'is-invalid': getControls(creneau, 'cPause')
+                      }"
+                    />
+                    <div class="invalid-feedback">
+                      <span> Veuillez renseigner le temps de pause. </span>
+                    </div>
+                  </div>
+
+                  <div class="grid-item">
+                    <label class="titre" attr.for="'cTime' + {{ i }}"
+                      >Temps effectif du shift</label
+                    >
+                    <input
+                      type="string"
+                      id="'cTime' + {{ i }}"
+                      formControlName="cTime"
+                      class="form-control contenuReadOnly"
+                      readonly
+                      pattern="[0-9]{2}:[0-9]{2}"
+                      [value]="
+                        calcul(
+                          i,
+                          creneau.value['cPause'],
+                          creneau.value['cEnd'],
+                          creneau.value['cBegin']
+                        )
+                      "
+                      value="[value]"
+                      [ngClass]="{
+                        'is-invalid': getControls(creneau, 'cTime')
+                      }"
+                    />
+                    <div class="invalid-feedback">
+                      <span>
+                        {{ errorMsgTemps }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="grid-item">
+                    <label class="titre" attr.for="'cDescription' + {{ i }}"
+                      >Description</label
+                    >
+                    <input
+                      type="text"
+                      id="{{ 'cDescription' + i }}"
+                      class="form-control contenu"
+                      formControlName="cDescription"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nb-card-footer>
+          <button
+            class="ajout"
+            size="small"
+            nbButton
+            ghost
+            status="info"
+            type="button"
+            (click)="addCreneauHours()"
+          >
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </nb-card-footer>
+      </div>
+
+      <!-- Troisièmre partie : ajout de créneaux texte -->
+      <div class="row" id="card" formArrayName="creneauText">
+        <div class="header"><h3>Shift Texte</h3></div>
+
+        <div *ngIf="creneauTList.controls.length > 0">
+          <div *ngFor="let text of creneauTList.controls; let i = index">
+            <div class="col-sm-12 col-md-12" [formGroupName]="i">
+              <div class="row">
+                <div class="col-sm-1 col-md-1">
+                  <button
+                    class="delete"
+                    size="small"
+                    nbButton
+                    ghost
+                    status="basic"
+                    type="button"
+                    (click)="removeCreneauText(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                  <label class="titre" attr.for="'cTextName' + {{ i }}"
+                    >Titre *</label
+                  >
+                  <input
+                    #autoInput
+                    nbInput
+                    type="text"
+                    (input)="onChange()"
+                    [nbAutocomplete]="auto"
+                    class="form-control contenu"
+                    formControlName="cTextName"
+                    id="'cTextName' + {{ i }}"
+                    [ngClass]="{
+                      'is-invalid': getControls(text, 'cTextName')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span> Veuillez donner un nom au créneau. </span>
+                  </div>
+                  <nb-autocomplete
+                    #auto
+                    id="'cTextName' + {{ i }}"
+                    (selectedChange)="onSelectionChange($event)"
+                  >
+                    <nb-option
+                      *ngFor="let absence of filteredAbsences$ | async"
+                      [value]="absence"
+                    >
+                      {{ absence }}
+                    </nb-option>
+                  </nb-autocomplete>
+                </div>
+
+                <div class="col-sm-4 col-md-2">
+                  <label class="titre" attr.for="'cTextHours' + {{ i }}"
+                    >Temps effectif</label
+                  >
+                  <input
+                    type="time"
+                    id="'cTextHours' + {{ i }}"
+                    formControlName="cTextHours"
+                    class="form-control contenu"
+                    [ngClass]="{
+                      'is-invalid': getControls(text, 'cTextHours')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span> Champs obligatoire. </span>
+                  </div>
+                </div>
+
+                <div class="col-sm-2 col-md-1">
+                  <label class="titre" attr.for="cTextColor + {{ i }}"
+                    >Couleur</label
+                  >
+                  <div id="cTextColor + {{ i }}">
+                    <button
+                      type="button"
+                      id="buttoncTextColor{{ i }}"
+                      class="colorButton"
+                      (click)="display(i, 'cTextColor')"
+                    >
+                      <nb-icon
+                        id="icon1cTextColor{{ i }}"
+                        icon="arrow-ios-upward-outline"
+                      ></nb-icon>
+                      <nb-icon
+                        style="display: none"
+                        id="icon2cTextColor{{ i }}"
+                        icon="arrow-ios-downward-outline"
+                      ></nb-icon>
+                    </button>
+                  </div>
+                  <table
+                    id="tablecTextColor{{ i }}"
+                    style="width: 100%; display: none"
+                  >
+                    <tr>
+                      <td *ngFor="let color of colors1; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 1)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors2; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 2)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors3; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 3)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors4; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 4)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                  <label class="titre" attr.for="'tDescription' + {{ i }}"
+                    >Description</label
+                  >
+                  <input
+                    type="text"
+                    id="{{ 'tDescription' + i }}"
+                    class="form-control contenu"
+                    formControlName="tDescription"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            class="ajout"
+            size="small"
+            nbButton
+            ghost
+            status="info"
+            type="button"
+            (click)="addCreneauText()"
+          >
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Troisième partie : ajout de contraintes sur 2 créneaux -->
+      <div *ngIf="listCreneaux.length > 0">
+        <div class="row" id="card" formArrayName="list2">
+          <div class="header">
+            <h3>Contraintes sur deux shifts successifs</h3>
+          </div>
+          <div *ngIf="deuxList.controls.length > 0">
+            <div *ngFor="let text of deuxList.controls; let i = index">
+              <div class="col-sm-12 col-md-12" [formGroupName]="i">
+                <div class="row">
+                  <div class="col-sm-2 col-md-1">
+                    <button
+                      class="delete"
+                      size="small"
+                      nbButton
+                      ghost
+                      status="basic"
+                      type="button"
+                      (click)="removeDeux(i)"
+                    >
+                      <nb-icon icon="trash-2-outline"></nb-icon>
+                    </button>
+                  </div>
+                  <div class="col-sm-5 col-md-3">
+                    <label class="titre" attr.for="'21' + {{ i }}"
+                      >Shift jour J</label
+                    >
+                    <select
+                      class="form-control contenu"
+                      formControlName="creneau1"
+                      id="21 + {{ i }}"
+                    >
+                      <option
+                        *ngFor="let cA of listCreneaux; let j = index"
+                        [ngStyle]="{
+                          'background-color': listColorCreneaux[j]
+                        }"
+                        (click)="onSelectCouleur(listColorCreneaux[j], i, '21')"
+                        [value]="cA"
+                      >
+                        {{ cA }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-5 col-md-3">
+                    <label class="titre" attr.for="'22' + {{ i }}"
+                      >Shift jour J+1</label
+                    >
+                    <select
+                      class="form-control contenu"
+                      formControlName="creneau2"
+                      id="22 + {{ i }}"
+                    >
+                      <option
+                        *ngFor="let cB of listCreneaux; let j = index"
+                        [ngStyle]="{
+                          'background-color': listColorCreneaux[j]
+                        }"
+                        (click)="onSelectCouleur(listColorCreneaux[j], i, '22')"
+                        [value]="cB"
+                      >
+                        {{ cB }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4 col-md-2">
+                    <label class="titre" attr.for="autoriser + {{ i }}"
+                      >Succession de shifts</label
+                    >
+                    <nb-toggle
+                      class="form-control"
+                      id="autoriser + {{ i }}"
+                      formControlName="interdit"
+                      labelPosition="right"
+                    >
+                      <span *ngIf="text.value['interdit']">non autorisée</span>
+                      <span *ngIf="!text.value['interdit']">déconseillée</span>
+                    </nb-toggle>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addDeux()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quatrième partie : ajout de contraintes sur 3 créneaux -->
+        <div class="row" id="card" formArrayName="list3">
+          <div class="header">
+            <h3>Contraintes sur trois shifts successifs</h3>
+          </div>
+          <div *ngIf="troisList.controls.length > 0">
+            <div *ngFor="let text of troisList.controls; let i = index">
+              <div class="col-sm-12 col-md-12" [formGroupName]="i">
+                <div class="row">
+                  <div class="col-sm-2 col-md-1">
+                    <button
+                      class="delete"
+                      size="small"
+                      nbButton
+                      ghost
+                      status="basic"
+                      type="button"
+                      (click)="removeTrois(i)"
+                    >
+                      <nb-icon icon="trash-2-outline"></nb-icon>
+                    </button>
+                  </div>
+                  <div class="col-sm-5 col-md-2">
+                    <label class="titre" attr.for="'31' + {{ i }}"
+                      >Shift jour J</label
+                    >
+                    <select
+                      class="form-control contenu"
+                      formControlName="creneau1"
+                      id="31 + {{ i }}"
+                    >
+                      <option
+                        *ngFor="let c1 of listCreneaux; let j = index"
+                        [ngStyle]="{
+                          'background-color': listColorCreneaux[j]
+                        }"
+                        (click)="onSelectCouleur(listColorCreneaux[j], i, '31')"
+                        [value]="c1"
+                      >
+                        {{ c1 }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-5 col-md-2">
+                    <label class="titre" attr.for="'32' + {{ i }}"
+                      >Shift jour J+1</label
+                    >
+                    <select
+                      class="form-control contenu"
+                      formControlName="creneau2"
+                      id="32 + {{ i }}"
+                    >
+                      <option
+                        *ngFor="let c2 of listCreneaux; let j = index"
+                        [ngStyle]="{
+                          'background-color': listColorCreneaux[j]
+                        }"
+                        (click)="onSelectCouleur(listColorCreneaux[j], i, '32')"
+                        [value]="c2"
+                      >
+                        {{ c2 }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4 col-md-2">
+                    <label class="titre" attr.for="'33' + {{ i }}"
+                      >Shift jour J+2</label
+                    >
+                    <select
+                      class="form-control contenu"
+                      formControlName="creneau3"
+                      id="33 + {{ i }}"
+                    >
+                      <option
+                        *ngFor="let c3 of listCreneaux; let j = index"
+                        [ngStyle]="{
+                          'background-color': listColorCreneaux[j]
+                        }"
+                        (click)="onSelectCouleur(listColorCreneaux[j], i, '33')"
+                        [value]="c3"
+                      >
+                        {{ c3 }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-sm-4 col-md-2">
+                    <label class="titre" attr.for="autoriser + {{ i }}"
+                      >Succession de shifts</label
+                    >
+                    <nb-toggle
+                      class="form-control"
+                      id="autoriser + {{ i }}"
+                      formControlName="interdit"
+                      labelPosition="right"
+                    >
+                      <span *ngIf="text.value['interdit']">non autorisée</span>
+                      <span *ngIf="!text.value['interdit']">déconseillée</span>
+                    </nb-toggle>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addTrois()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        nbButton
+        class="creer"
+        status="primary"
+        [disabled]="!equipeForm.valid"
+        type="submit"
+      >
+        Créer
+      </button>
+      <button nbButton class="annuler" status="basic">
+        <a class="annulerLink" routerLink="/">Annuler</a>
+      </button>
+    </form>
+  </nb-card-body>
+</nb-card>

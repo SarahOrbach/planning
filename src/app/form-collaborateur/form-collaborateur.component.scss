@@ -1,0 +1,62 @@
+button {
+    float: right;
+    justify-content: space-between;
+}
+
+.creer {
+    border-radius: 0;
+    margin-bottom: 3px;
+    margin-right: 5px;
+}
+
+.annuler {
+    border-radius: 0;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    margin-right: 15px;
+    margin-bottom: 5px;
+    background-color: white;
+}
+
+.annulerLink{
+    text-decoration: none;
+    color: rgb(51, 51, 51);
+}
+
+.titre {
+    color: rgb(160, 160, 160);
+}
+
+.contenu {
+    background-color: rgb(240, 240, 240);
+    border-radius: 0;
+}
+
+.espace {
+    margin-top: 5px; 
+    display: flex;
+}
+
+.nombre {
+    max-width: 50px;
+    display: flex;
+   float: right;
+}
+
+nb-card-header {
+    border-top: 3px solid rgb(240,240,240);
+}
+
+nb-card-body {
+    padding: 5px;
+}
+
+h2 {
+    font-family: Arial, serif;
+    color: rgb(60, 130, 200);
+    text-align: left;
+    padding-right: 2%;
+    padding-left: 2%;
+    font-size: 30px;
+    text-align: center;
+}

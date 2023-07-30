@@ -1,0 +1,165 @@
+// Aspect des titres
+nb-card-header {
+    border-top: 3px solid rgb(165, 195, 245);
+}
+
+h2 {
+    font-family: Arial, serif;
+    color: rgb(60,130, 200);
+    text-align: left;
+    padding-right: 2%;
+    padding-left: 2%;
+    font-size: 30px;
+    text-align: center;
+}
+
+.header {
+    border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+h3 {
+    font-size: 100%;
+}
+
+nb-card {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+// Aspect des boutons : ajouter et supprimer un element au formulaire, valider ou annuler le formulaire
+button {
+    float: right;
+    justify-content: space-between;
+}
+
+
+.ajout {
+    float: left;
+    justify-content: space-between;
+    max-width: 230px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.delete {
+    float: left;
+    justify-content: space-between;
+    max-width: 230px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.creer {
+    border-radius: 0;
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.annuler {
+    border-radius: 0;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    margin-right: 15px;
+    margin-bottom: 5px;
+    background-color: white;
+}
+
+.annulerLink{
+    text-decoration: none;
+    color: rgb(51, 51, 51);
+}
+
+// Aspect des champs
+.titre {
+    margin-top: 5px;
+    color: rgb(160, 160, 160);
+}
+
+.contenu {
+    background-color: rgb(240, 240, 240);
+    border-radius: 0;
+}
+
+.contenuReadOnly {
+    background-color: white;
+    border-radius: 0;
+}
+
+// Shift Horaire : conteneur
+.container {
+    display: grid;
+    justify-content: left;
+    grid-template-columns: auto auto auto auto auto auto auto; 
+  
+}
+
+.grid-item {
+    padding: 5px;
+    min-width: 100px;
+}
+
+.iconPosition {
+    margin-top: 40px;
+    max-width: 20px;
+}
+
+// Choix des couleurs des créneaux
+.colorButton {
+    border: none;
+    padding: 5px;
+    padding-left: 60px;
+    border-radius: 30px;
+    float: right;
+}
+
+.color {
+    border: none;
+    margin: 3px;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+table, td {
+    border: 1px solid rgb(242, 242, 243);
+    z-index: 10;
+  }
+
+  .blue1 {
+    background-color: rgb(255,230, 160);
+}
+ 
+.green1 {
+    background-color: rgb(210, 235, 190);
+}
+
+.yellow1 {
+    background-color: rgb(190, 225, 250);
+}
+
+.blue2 {
+    background-color: rgb(200, 220, 225);
+}
+ 
+.green2 {
+    background-color: rgb(225, 225, 255);
+}
+
+.yellow2 {
+    background-color: rgb(230, 210, 240);
+}
+
+.blue3 {
+    background-color: rgb(15, 125, 80);
+}
+ 
+.green3 {
+    background-color: rgb(15, 90, 190);
+}
+
+.yellow3 {
+    background-color: rgb(35, 95, 110);
+}
+
+.blue4 {
+    background-color: rgb(100, 100, 100);
+}

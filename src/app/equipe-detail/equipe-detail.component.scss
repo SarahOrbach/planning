@@ -1,0 +1,215 @@
+.blue1 {
+    background-color: rgb(255,230, 160);
+}
+ 
+.green1 {
+    background-color: rgb(210, 235, 190);
+}
+
+.yellow1 {
+    background-color: rgb(190, 225, 250);
+}
+
+.blue2 {
+    background-color: rgb(200, 220, 225);
+}
+ 
+.green2 {
+    background-color: rgb(225, 225, 255);
+}
+
+.yellow2 {
+    background-color: rgb(230, 210, 240);
+}
+
+.blue3 {
+    background-color: rgb(15, 125, 80);
+}
+ 
+.green3 {
+    background-color: rgb(15, 90, 190);
+}
+
+.yellow3 {
+    background-color: rgb(35, 95, 110);
+}
+
+.blue4 {
+    background-color: rgb(100, 100, 100);
+}
+
+
+.colorButton {
+    border: none;
+    padding: 5px;
+    padding-left: 60px;
+    //border-radius: 30px;
+    float: right;
+}
+
+.color {
+    border: none;
+    margin: 3px;
+    padding: 10px;
+    border-radius: 30px;
+}
+
+table, td {
+    border: 1px solid rgb(242, 242, 243);
+    z-index: 9999;
+}
+
+
+.couleur {
+    background-color: gray;
+    border-radius: 100px;
+}
+
+/** Boutons ajout et suppression d'éléments */
+button {
+    float: right;
+    justify-content: space-between;
+}
+
+.ajout {
+    float: left;
+    justify-content: space-between;
+    max-width: 230px;
+    text-align: center;
+}
+
+.creer {
+    border-radius: 0;
+    float: right;
+    justify-content: space-between;
+    max-width: 100px;
+    margin: 5px;
+} 
+
+
+/** Aspect général des éléments */
+div {
+    padding: 0;
+    margin: 0;
+}
+
+.contenu {
+    background-color: rgb(240, 240, 240);
+    border-radius: 0;
+}
+
+.contenuReadOnly {
+    background-color: white;
+    border-radius: 0;
+}
+
+.titre {
+    text-align: center;
+    color: rgb(160, 160, 160);
+}
+
+.tiret {
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+
+/** En-tête et choix du nom de l'équipe */
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.retour {
+    border: 1px solid rgba(220, 217, 217, 0.8);
+}
+
+.retourLink{
+    text-decoration: none;
+    color: rgb(105, 104, 104);
+}
+
+.nomEquipe {
+    max-width: 200px;
+}
+
+.touched {
+    display: flex;
+    color: red;
+    justify-content: center;
+}
+
+.collab-button {
+    border: none;
+    background-color: white;
+    padding: 0;
+}
+
+.collab-button-white {
+    border: none;
+    background-color: white;
+    padding: 0;
+    color: white;
+}
+
+/** Apparence des cartes */
+.nb-card {
+    margin: 0px;
+    border-top: 3px solid rgba(240, 240, 240);
+}
+
+.titreSection {  
+    text-align: center; 
+    font-size: 18px;
+    color: rgb(60, 130, 200);
+}
+
+/** Apparence des Shifts */
+.shift-header {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    display: flex;
+    border-bottom: none;
+}
+
+.shift-button {
+    border: 1px solid rgba(220, 217, 217, 0.8);
+    border-bottom: none;
+    background-color: white;
+    padding: 5px;
+}
+
+.shift-body {
+    border-top: 6px solid rgba(118, 142, 239, 0.8);
+}
+
+/** Organisation des conteneurs */
+.grid-container9 {
+    display: inline-grid;
+    justify-content: space-evenly;
+    grid-template-columns: 40px auto 60px 60px auto auto 150px auto 200px;
+    padding: 10px;
+}
+
+.grid-item {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 11px;
+    text-align: center;
+    min-width: 100px;
+}
+
+.grid-container {
+    display: inline-grid;
+    justify-content: space-evenly;
+    grid-template-columns: 40px auto auto auto auto;
+    //padding: 10px;
+}
+
+.grid-container6 {
+    display: inline-grid;
+    justify-content: space-evenly;
+    grid-template-columns: 40px auto auto auto auto auto;
+    //padding: 10px;
+}
+

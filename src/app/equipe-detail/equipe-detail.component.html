@@ -1,0 +1,934 @@
+<form
+  novalidate
+  (ngSubmit)="onSubmit(equipeForm.value)"
+  #formDirective="ngForm"
+  [formGroup]="equipeForm"
+>
+  <div *ngIf="equipeForm.touched" class="touched">
+    Validez pour sauvegarder les modifications
+  </div>
+  <nb-card *ngIf="equipe != undefined">
+    <nb-card-header class="header">
+      <input
+        type="text"
+        formControlName="name"
+        class="form-control contenu nomEquipe"
+        [ngClass]="{
+          'is-invalid': getControls(equipeForm, 'name')
+        }"
+      />
+      <div class="invalid-feedback">
+        <span> Veuillez donner un nom à l'équipe. </span>
+      </div>
+      <button class="retour" type="button">
+        <a class="retourLink" routerLink="/">Retour au planning</a>
+      </button>
+    </nb-card-header>
+
+    <nb-card-body class="row">
+      <nb-card class="col-sm-12 col-md-12 nb-card">
+        <nb-card-body class="row">
+          <nb-card class="col-sm-6 col-md-3">
+            <nb-card-header class="titreSection">
+              Collaborateurs
+            </nb-card-header>
+            <nb-card-body>
+              <div>
+                <dl>
+                  <dt
+                    *ngFor="
+                      let name of equipeForm.get('collaborateursId')?.value;
+                      let i = index
+                    "
+                  >
+                    <nb-checkbox
+                      (checkedChange)="checkedChange($event, name)"
+                      checked="true"
+                      >{{ collaborateursPresentList[i] }}
+                    </nb-checkbox>
+                    <button
+                      *ngIf="i != 0"
+                      (click)="changeOrder('up', i)"
+                      class="collab-button"
+                      type="button"
+                    >
+                      <nb-icon icon="arrow-up-outline"></nb-icon>
+                    </button>
+                    <button
+                      *ngIf="i === 0"
+                      class="collab-button-white"
+                      type="button"
+                    >
+                      <nb-icon icon="minus-outline"></nb-icon>
+                    </button>
+                    <button
+                      *ngIf="
+                        i !=
+                        equipeForm.get('collaborateursId')?.value.length - 1
+                      "
+                      (click)="changeOrder('down', i)"
+                      class="collab-button"
+                      type="button"
+                    >
+                      <nb-icon icon="arrow-down-outline"></nb-icon>
+                    </button>
+                  </dt>
+                </dl>
+              </div>
+              <button
+                (click)="
+                  displayCollaborateursAbsent = !displayCollaborateursAbsent
+                "
+                class="shift-button"
+                [ngStyle]="{
+                  'background-color': displayCollaborateursAbsent
+                    ? 'rgba(118, 142, 239, 0.8)'
+                    : 'white'
+                }"
+                type="button"
+              >
+                Autres collaborateurs
+              </button>
+              <div
+                [ngStyle]="{
+                  display: displayCollaborateursAbsent ? 'inline' : 'none'
+                }"
+              >
+                <dl>
+                  <dt
+                    *ngFor="let id of collaborateursAbsentIdList; let i = index"
+                  >
+                    <nb-checkbox
+                      outline
+                      (checkedChange)="checkedChange($event, id)"
+                      checked="{{ collaborateursAbsentList[i] }}"
+                      >{{ collaborateursAbsentList[i] }}
+                    </nb-checkbox>
+                  </dt>
+                </dl>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+          <div class="col-sm-6 col-md-9">
+            <div
+              *ngFor="
+                let id of equipeForm.get('collaborateursId')?.value;
+                let i = index
+              "
+            >
+              <app-collaborateur-detail [collaborateurId]="id" [Y]="i">
+              </app-collaborateur-detail>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="nb-card">
+        <nb-card-header class="shift-header">
+          <button
+            (click)="displayShiftHoraire = true"
+            class="shift-button"
+            [ngStyle]="{
+              'background-color': displayShiftHoraire
+                ? 'rgba(118, 142, 239, 0.8)'
+                : 'white'
+            }"
+            type="button"
+          >
+            Shifts horaires
+          </button>
+          <button
+            (click)="displayShiftHoraire = false"
+            [ngStyle]="{
+              'background-color': !displayShiftHoraire
+                ? 'rgba(118, 142, 239, 0.8)'
+                : 'white'
+            }"
+            class="shift-button"
+            type="button"
+          >
+            Shifts textes
+          </button>
+        </nb-card-header>
+        <nb-card-body
+          [ngStyle]="{
+            display: displayShiftHoraire ? 'inline' : 'none'
+          }"
+          class="shift-body"
+          formArrayName="creneauHours"
+        >
+          <div *ngIf="creneauList.controls.length > 0">
+            <div *ngFor="let creneau of creneauList.controls; let i = index">
+              <div class="grid-container9" [formGroupName]="i">
+                <div class="grid-item" *ngIf="i === 0" class="titre"></div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Visibilité
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">Début</div>
+                <div class="grid-item" *ngIf="i === 0" class="titre"></div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">Fin</div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Pause (en min.)
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Temps effectif du shift
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Couleur
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Description
+                </div>
+
+                <div class="grid-item">
+                  <button
+                    class="ajout"
+                    size="small"
+                    nbButton
+                    status="basic"
+                    ghost
+                    type="button"
+                    (click)="removeCreneauHours(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+
+                <div class="grid-item">
+                  <nb-toggle
+                    class="form-control"
+                    [(checked)]="creneau.value['V']"
+                    formControlName="V"
+                  >
+                  </nb-toggle>
+                </div>
+                <div class="grid-item">
+                  <input
+                    type="time"
+                    id="cBegin + {{ i }}"
+                    formControlName="cBegin"
+                    class="form-control contenu"
+                    (keyup)="
+                      checkAndMoveToNextField(creneau, 'cBegin', 'cEnd + ' + i)
+                    "
+                    [ngClass]="{
+                      'is-invalid': getControls(creneau, 'cBegin')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span>
+                      Veuillez renseigner le début du créneau horaire.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="grid-item tiret">_</div>
+
+                <div class="grid-item">
+                  <input
+                    type="time"
+                    id="cEnd + {{ i }}"
+                    formControlName="cEnd"
+                    class="form-control contenu"
+                    (keyup)="
+                      checkAndMoveToNextField(creneau, 'cEnd', 'cPause + ' + i)
+                    "
+                    [ngClass]="{
+                      'is-invalid': getControls(creneau, 'cEnd')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span>
+                      Veuillez renseigner la fin du créneau horaire.
+                    </span>
+                  </div>
+                </div>
+
+                <div class="grid-item">
+                  <input
+                    type="text"
+                    id="cPause + {{ i }}"
+                    formControlName="cPause"
+                    class="form-control contenu"
+                    [ngClass]="{
+                      'is-invalid': getControls(creneau, 'cPause')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span> Veuillez renseigner le temps de pause. </span>
+                  </div>
+                </div>
+
+                <div class="grid-item">
+                  <input
+                    type="string"
+                    id="'cTime' + {{ i }}"
+                    formControlName="cTime"
+                    class="form-control contenuReadOnly"
+                    readonly
+                    pattern="[0-9]{2}:[0-9]{2}"
+                    [value]="
+                      calcul(
+                        i,
+                        creneau.value['cPause'],
+                        creneau.value['cEnd'],
+                        creneau.value['cBegin']
+                      )
+                    "
+                    value="[value]"
+                    [ngClass]="{
+                      'is-invalid': getControls(creneau, 'cTime')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span>
+                      {{ errorMsgTemps }}
+                    </span>
+                  </div>
+                </div>
+                <!--
+                <div class="grid-item">
+
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="cColor"
+                    id="cColor + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let color of colors"
+                      [value]="color"
+                      [ngClass]="traducteurCouleur(color)"
+                      (click)="onClickColor(color, i, 'cColorT')"
+                    >
+                      {{ color }}
+                    </option>
+                  </select>
+                </div>-->
+
+                <div class="grid-item">
+                  <div id="cColor + {{ i }}">
+                    <button
+                      type="button"
+                      id="buttoncColor{{ i }}"
+                      class="colorButton"
+                      (click)="display(i, 'cColor')"
+                    >
+                      <nb-icon
+                        id="icon1cColor{{ i }}"
+                        icon="arrow-ios-upward-outline"
+                      ></nb-icon>
+                      <nb-icon
+                        style="display: none"
+                        id="icon2cColor{{ i }}"
+                        icon="arrow-ios-downward-outline"
+                      ></nb-icon>
+                    </button>
+                  </div>
+                  <table
+                    id="tablecColor{{ i }}"
+                    style="width: 100%; display: none"
+                  >
+                    <tr>
+                      <td *ngFor="let color of colors1; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 1)"
+                          (click)="onClickCouleur(color, i, 'cColorT')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors2; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 2)"
+                          (click)="onClickCouleur(color, i, 'cColorT')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors3; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 3)"
+                          (click)="onClickCouleur(color, i, 'cColorT')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors4; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 4)"
+                          (click)="onClickCouleur(color, i, 'cColorT')"
+                        ></button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="grid-item">
+                  <input
+                    type="text"
+                    id="{{ 'cDescription' + i }}"
+                    class="form-control contenu"
+                    formControlName="cDescription"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addCreneauHours()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </nb-card-body>
+
+        <nb-card-body
+          [ngStyle]="{
+            display: displayShiftHoraire ? 'none' : 'inline'
+          }"
+          class="shift-body"
+          formArrayName="creneauText"
+        >
+          <div *ngIf="creneauTList.controls.length > 0">
+            <div *ngFor="let text of creneauTList.controls; let i = index">
+              <div class="grid-container6" [formGroupName]="i">
+                <div class="grid-item" *ngIf="i === 0" class="titre"></div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Visibilité
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">Titre</div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Temps effectif
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Couleur
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Description
+                </div>
+                <div class="grid-item">
+                  <button
+                    class="ajout"
+                    size="small"
+                    status="basic"
+                    nbButton
+                    ghost
+                    type="button"
+                    (click)="removeCreneauText(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+
+                <div class="grid-item">
+                  <nb-toggle
+                    class="form-control"
+                    [(checked)]="text.value['V']"
+                    formControlName="V"
+                  >
+                  </nb-toggle>
+                </div>
+                <div class="grid-item">
+                  <input
+                    #autoInput
+                    nbInput
+                    type="text"
+                    (input)="onChange()"
+                    [nbAutocomplete]="auto"
+                    class="form-control contenu"
+                    formControlName="cTextName"
+                    id="cTextName + {{ i }}"
+                    [ngClass]="{
+                      'is-invalid': getControls(text, 'cTextName')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span> Veuillez donner un nom au créneau. </span>
+                  </div>
+                  <nb-autocomplete
+                    #auto
+                    id="cTextName + {{ i }}"
+                    (selectedChange)="onSelectionChange($event)"
+                  >
+                    <nb-option
+                      *ngFor="let absence of filteredAbsences$ | async"
+                      [value]="absence"
+                    >
+                      {{ absence }}
+                    </nb-option>
+                  </nb-autocomplete>
+                </div>
+
+                <div class="grid-item">
+                  <input
+                    type="time"
+                    id="'cTextHours' + {{ i }}"
+                    formControlName="cTextHours"
+                    class="form-control contenu"
+                    [ngClass]="{
+                      'is-invalid': getControls(text, 'cTextHours')
+                    }"
+                  />
+                  <div class="invalid-feedback">
+                    <span> Champs obligatoire. </span>
+                  </div>
+                </div>
+
+                <div class="grid-item">
+                  <div id="cTextColor + {{ i }}">
+                    <button
+                      type="button"
+                      id="buttoncTextColor{{ i }}"
+                      class="colorButton"
+                      (click)="display(i, 'cTextColor')"
+                    >
+                      <nb-icon
+                        id="icon1cTextColor{{ i }}"
+                        icon="arrow-ios-upward-outline"
+                      ></nb-icon>
+                      <nb-icon
+                        style="display: none"
+                        id="icon2cTextColor{{ i }}"
+                        icon="arrow-ios-downward-outline"
+                      ></nb-icon>
+                    </button>
+                  </div>
+
+                  <table
+                    id="tablecTextColor{{ i }}"
+                    style="width: 100%; display: none"
+                  >
+                    <tr>
+                      <td *ngFor="let color of colors1; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 1)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors2; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 2)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors3; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 3)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td *ngFor="let color of colors4; let l = index">
+                        <button
+                          type="button"
+                          class="color"
+                          [ngClass]="setCouleur(l, 4)"
+                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                        ></button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="grid-item">
+                  <input
+                    type="text"
+                    id="{{ 'tDescription' + i }}"
+                    class="form-control contenu"
+                    formControlName="tDescription"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addCreneauText()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="nb-card">
+        <nb-card-header class="titreSection">
+          Contraintes Collaborateur
+        </nb-card-header>
+        <nb-card-body>
+          <table>
+            <tr>
+              <td></td>
+              <td
+                *ngFor="
+                  let creneau of creneauxContrainteCollaborateurList;
+                  let j = index
+                "
+              >
+                <button
+                  size="small"
+                  status="danger"
+                  nbButton
+                  ghost
+                  type="button"
+                  (click)="removeContrainteCollaborateur(creneau)"
+                >
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+                {{ creneau }}
+              </td>
+              <td>
+                <select (change)="onCreneauAdd($event)">
+                  <option>Total Horaire</option>
+                  <option
+                    *ngFor="let cA1 of listCreneaux; let c = index"
+                    [value]="cA1"
+                    [ngStyle]="{ 'background-color': listColorCreneaux[c] }"
+                  >
+                    {{ cA1 }}
+                  </option>
+                </select>
+              </td>
+            </tr>
+
+            <tr
+              *ngFor="
+                let collaborateur of equipe.collaborateursId;
+                let i = index
+              "
+            >
+              <td>{{ collaborateursPresentList[i] }}</td>
+              <td
+                *ngFor="
+                  let creneau of creneauxContrainteCollaborateurList;
+                  let j = index
+                "
+              >
+                <input
+                  type="text"
+                  value="{{ initialValue(collaborateur, creneau) }}"
+                  (focusout)="setContrainte($event, collaborateur, creneau)"
+                />
+              </td>
+            </tr>
+          </table>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="nb-card">
+        <nb-card-header class="titreSection">
+          Contraintes Entreprise
+        </nb-card-header>
+        <nb-card-body>
+          <table>
+            <tr>
+              <td></td>
+              <td>Lundi</td>
+              <td>Mardi</td>
+              <td>Mercredi</td>
+              <td>Jeudi</td>
+              <td>Vendredi</td>
+              <td>Samedi</td>
+              <td>Dimanche</td>
+            </tr>
+            <tr *ngFor="let horaire of horaireContrainteList">
+              <td>
+                <button
+                  size="small"
+                  status="danger"
+                  nbButton
+                  ghost
+                  type="button"
+                  (click)="removeHoraireContrainte(horaire)"
+                >
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+                {{ horaire }}
+              </td>
+              <td *ngFor="let jour of semaine; let j = index">
+                <input
+                  type="text"
+                  value="{{ initialValueHoraire(j, horaire) }}"
+                  (focusout)="setContrainteHoraire($event, j, horaire)"
+                />
+              </td>
+            </tr>
+
+            <tr *ngFor="let creneau of creneauxContrainteList">
+              <td>
+                <button
+                  size="small"
+                  status="danger"
+                  nbButton
+                  ghost
+                  type="button"
+                  (click)="removeHoraireContrainte(creneau)"
+                >
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+                {{ creneau }}
+              </td>
+              <td *ngFor="let jour of [1, 2, 3, 4, 5, 6, 0]; let j = index">
+                <input
+                  type="text"
+                  value="{{ initialValueHoraire(j, creneau) }}"
+                  (focusout)="setContrainteHoraire($event, j, creneau)"
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <input type="time" (focusout)="onHoraireAdd($event)" />
+              </td>
+              <td>
+                <select (change)="onHoraireAdd($event)">
+                  <option
+                    *ngFor="let cA1 of listCreneaux; let c = index"
+                    [value]="cA1"
+                    [ngStyle]="{ 'background-color': listColorCreneaux[c] }"
+                  >
+                    {{ cA1 }}
+                  </option>
+                </select>
+              </td>
+            </tr>
+          </table>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card class="nb-card">
+        <nb-card-header class="titreSection">
+          Contraintes sur les shifts successifs
+        </nb-card-header>
+        <nb-card-body class="col-sm-12 col-md-12">
+          <div formArrayName="list2" *ngIf="deuxList.controls.length > 0">
+            <div
+              class="col-sm-12 col-md-12"
+              *ngFor="let text of deuxList.controls; let i = index"
+            >
+              <div [formGroupName]="i" class="grid-container">
+                <div class="grid-item" *ngIf="i === 0"></div>
+                <div class="grid-item" *ngIf="i === 0"></div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Shift jour J
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Shift jour J+1
+                </div>
+                <div class="grid-item" *ngIf="i === 0" class="titre">
+                  Shift jour J+2
+                </div>
+                <div class="grid-item">
+                  <button
+                    class="ajout"
+                    size="small"
+                    status="basic"
+                    nbButton
+                    ghost
+                    type="button"
+                    (click)="removeDeux(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+                <div class="grid-item">
+                  <nb-toggle
+                    class="form-control"
+                    [(checked)]="text.value['interdit']"
+                    formControlName="interdit"
+                  >
+                    <span *ngIf="text.value['interdit']">non autorisée</span>
+                    <span *ngIf="!text.value['interdit']">déconseillée</span>
+                  </nb-toggle>
+                </div>
+                <div class="grid-item">
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="creneau1"
+                    id="cA1 + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let cA1 of listCreneaux; let j = index"
+                      [value]="cA1"
+                      [ngStyle]="{ 'background-color': listColorCreneaux[j] }"
+                      (click)="onClickColor2(i, listColorCreneaux[j], 'cA1')"
+                    >
+                      {{ cA1 }}
+                    </option>
+                  </select>
+                </div>
+                <div class="grid-item">
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="creneau2"
+                    id="cB1 + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let cB1 of listCreneaux; let j = index"
+                      [value]="cB1"
+                      [ngStyle]="{ 'background-color': listColorCreneaux[j] }"
+                      (click)="onClickColor2(i, listColorCreneaux[j], 'cB1')"
+                    >
+                      {{ cB1 }}
+                    </option>
+                  </select>
+                </div>
+                <div class="grid-item"></div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-container">
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addDeux()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+          <div formArrayName="list3" *ngIf="troisList.controls.length > 0">
+            <div
+              class="col-sm-12 col-md-12"
+              *ngFor="let text of troisList.controls; let i = index"
+            >
+              <div [formGroupName]="i" class="grid-container">
+                <div class="grid-item">
+                  <button
+                    class="ajout"
+                    size="small"
+                    nbButton
+                    ghost
+                    status="basic"
+                    type="button"
+                    (click)="removeTrois(i)"
+                  >
+                    <nb-icon icon="trash-2-outline"></nb-icon>
+                  </button>
+                </div>
+                <div class="grid-item">
+                  <nb-toggle
+                    class="form-control"
+                    [(checked)]="text.value['interdit']"
+                    formControlName="interdit"
+                    ><span *ngIf="text.value['interdit']">non autorisée</span>
+                    <span *ngIf="!text.value['interdit']">déconseillée</span>
+                  </nb-toggle>
+                </div>
+                <div class="grid-item">
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="creneau1"
+                    id="cA2 + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let cA2 of listCreneaux; let j = index"
+                      [value]="cA2"
+                      [ngStyle]="{ 'background-color': listColorCreneaux[j] }"
+                      (click)="onClickColor2(i, listColorCreneaux[j], 'cA2')"
+                    >
+                      {{ cA2 }}
+                    </option>
+                  </select>
+                </div>
+                <div class="grid-item">
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="creneau2"
+                    id="cB2 + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let cB2 of listCreneaux; let j = index"
+                      [value]="cB2"
+                      [ngStyle]="{ 'background-color': listColorCreneaux[j] }"
+                      (click)="onClickColor2(i, listColorCreneaux[j], 'cB2')"
+                    >
+                      {{ cB2 }}
+                    </option>
+                  </select>
+                </div>
+                <div class="grid-item">
+                  <select
+                    class="form-control contenu couleur"
+                    formControlName="creneau3"
+                    id="cC2 + {{ i }}"
+                  >
+                    <option
+                      *ngFor="let cC2 of listCreneaux; let j = index"
+                      [value]="cC2"
+                      [ngStyle]="{ 'background-color': listColorCreneaux[j] }"
+                      (click)="onClickColor2(i, listColorCreneaux[j], 'cC2')"
+                    >
+                      {{ cC2 }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-container">
+            <button
+              class="ajout"
+              size="small"
+              nbButton
+              ghost
+              status="info"
+              type="button"
+              (click)="addTrois()"
+            >
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+      <button
+        nbButton
+        class="creer"
+        status="primary"
+        (click)="retour()"
+        type="submit"
+      >
+        Valider
+      </button>
+      <!--  </form> -->
+    </nb-card-body>
+  </nb-card>
+</form>

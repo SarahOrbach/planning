@@ -1,41 +1,41 @@
 .blue1 {
-    background-color: rgb(255,230, 160);
+    background-color: #ffe6a0;
 }
  
 .green1 {
-    background-color: rgb(210, 235, 190);
+    background-color: #d2ebbe;
 }
 
 .yellow1 {
-    background-color: rgb(190, 225, 250);
+    background-color: #bee1fa;
 }
 
 .blue2 {
-    background-color: rgb(200, 220, 225);
+    background-color: #c8dce1;
 }
  
 .green2 {
-    background-color: rgb(225, 225, 255);
+    background-color: #e1e1e1;
 }
 
 .yellow2 {
-    background-color: rgb(230, 210, 240);
+    background-color: #e6d2f0;
 }
 
 .blue3 {
-    background-color: rgb(15, 125, 80);
+    background-color: #0f7d50;
 }
  
 .green3 {
-    background-color: rgb(15, 90, 190);
+    background-color: #0f5abe;
 }
 
 .yellow3 {
-    background-color: rgb(35, 95, 110);
+    background-color: #235f6e;
 }
 
 .blue4 {
-    background-color: rgb(100, 100, 100);
+    background-color: #646464;
 }
 
 
@@ -58,7 +58,6 @@ table, td {
     border: 1px solid rgb(242, 242, 243);
     z-index: 9999;
 }
-
 
 .couleur {
     background-color: gray;
@@ -213,3 +212,17 @@ div {
     //padding: 10px;
 }
 
+/** Tables de contraintes */
+.contrainte {
+    margin: 10px;
+}
+
+.contrainte-grid {
+    padding: 10px;
+    min-width: 120px;
+    max-width: 120px; 
+}
+
+.contrainte-input {
+    max-width: 40px;
+}

@@ -150,7 +150,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-12" *ngIf="header()">
         <router-outlet></router-outlet>
-        <div *ngIf="equipes != undefined && equipes.length > 0; else elseBlock">
+        <div *ngIf="equipes != undefined && equipes.length > 0">
           <div *ngIf="detail()">
             <div *ngFor="let equipe of equipes; let i = index">
               <div *ngIf="equipesShow[i]">
@@ -167,11 +167,6 @@
             </div>
           </div>
         </div>
-
-        <!-- A la première connexion, l'utilisateur n'a aucune équipe et commence par en créer une-->
-        <ng-template #elseBlock>
-          <app-form-equipe></app-form-equipe>
-        </ng-template>
       </div>
     </div>
   </nb-layout-column>

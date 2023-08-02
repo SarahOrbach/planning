@@ -55,6 +55,23 @@ export class PlanningComponent implements OnInit {
   contraintesCList = [[0]];
   contraintesCreneauxList = [""];
   contraintesHList = [[""]];
+
+  /** Annulation des copiers/collers */
+  creneauCopy = [""];
+  iCopy = 1;
+  jCopy = 1;
+  kCopy = 1;
+  dayCopy = new Date();
+  creneauSwap = [""];
+  iSwap = 0;
+  jSwap = 0;
+  kSwap = 0;
+  daySwap = new Date();
+  creneauSwap2 = [""];
+  iSwap2 = 0;
+  jSwap2 = 0;
+  kSwap2 = 0;
+  daySwap2 = new Date();
   
 
   constructor(
@@ -70,15 +87,11 @@ export class PlanningComponent implements OnInit {
 
   async ngOnInit() {
     this.userId = this.authService.userId;
-    //this.equipes$ = this.fetch(this.userId, this.equipeId);
     let test = await this.getEquipe();
     this.getCreneauList();
-    //this.collaborateurs$ = this.collaborateurService.fetchAll(this.userId);
     this.collaborateurService.fetchAll(this.userId)
-    //.pipe()
     .subscribe((collab) => {
       this.collaborateursNamesList.pop();
-      //this.collaborateurs$.subscribe(collaborateurs => {
       if (this.equipe.collaborateursId != undefined ) {
         for (let j =0; j < this.equipe.collaborateursId.length; j++) {
           for (let i = 0; i < collab.length; i++) {
@@ -88,14 +101,9 @@ export class PlanningComponent implements OnInit {
           }
         }
       }
-
-
-      //});
     });
-    //this.getCollaborateurNames();
     this.calendrierArray.pop();
     
-   // setTimeout(() => {
       for (let i = 0; i < this.weekNumber; i++) { 
         if ( i === 0 ) {
           this.calendrierForm0 = this.fb.group({
@@ -111,17 +119,11 @@ export class PlanningComponent implements OnInit {
           this.add3();
         } 
       }
-      //this.changeDetectorRef.detectChanges();
-   // }, 200);
 
       this.changeDetectorRef.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-   /* if (changes['week'].previousValue != undefined && changes['week'].previousValue != changes['week'].currentValue) {
-      this.ngOnInit();
-    }*/
-    
     if ((changes['week'].previousValue != undefined && changes['week'].previousValue != changes['week'].currentValue)) {
       this.ngOnInit();
       this.showResume = [false, false, false, false];
@@ -153,21 +155,19 @@ export class PlanningComponent implements OnInit {
           this.equipe.list3 = JSON.parse(this.equipe.list3.toString());
         }
         if ( this.equipe.contraintesC != undefined && this.equipe.contraintesC.length != 0) {
-          //this.collaborateurId
           let equipe = JSON.parse(this.equipe.contraintesC.toString())
-          
           this.contraintesCList.pop();
           this.contraintesCreneauxList.pop();
           
           for (let i = 0; i< equipe.length; i++ ) {
             let notExist = true;
             for (let j =0; j< this.contraintesCreneauxList.length; j++ ) {
-              if (this.contraintesCreneauxList[j] === equipe[i].creneau){
+              if (this.contraintesCreneauxList[j] === equipe[i].C){
                 notExist = false;
               } 
             }
             if (notExist) {
-              this.contraintesCreneauxList.push(equipe[i].creneau);
+              this.contraintesCreneauxList.push(equipe[i].C);
             }
           }
           
@@ -180,8 +180,8 @@ export class PlanningComponent implements OnInit {
             for (let i = 0; i< equipe.length; i++ ) {
               for (let k =0; k< this.equipe.collaborateursId.length; k++ ) {
                 for (let j =0; j< this.contraintesCreneauxList.length; j++ ) {
-                  if (this.contraintesCreneauxList[j] === equipe[i].creneau && this.equipe.collaborateursId[k] === equipe[i].cId ){
-                    this.contraintesCList[k][j] = equipe[i].valeur;
+                  if (this.contraintesCreneauxList[j] === equipe[i].C && this.equipe.collaborateursId[k] === equipe[i].Id ){
+                    this.contraintesCList[k][j] = equipe[i].V;
                   } 
                 }
               }
@@ -190,11 +190,14 @@ export class PlanningComponent implements OnInit {
           }    
           this.equipe.contraintesC = JSON.parse(this.equipe.contraintesC.toString());
         }
+
         if ( this.equipe.contraintesH != undefined && this.equipe.contraintesH.length != 0) {
           this.contraintesHList.pop();
           let premier = JSON.stringify(this.equipe.contraintesH).slice(3,-3).split("},{");
+          
           for (let i =0; i< premier.length; i++ ){
             let second = premier[i].split('\\\"');
+            
             let notExist = true;
             for (let j =0; j< this.contraintesHList.length; j++ ) {
               if (this.contraintesHList[j][0] === second[5]){
@@ -204,6 +207,11 @@ export class PlanningComponent implements OnInit {
             }
             if (notExist) {
               this.contraintesHList.push([second[5], '0','0','0','0','0','0','0']);
+              for (let j =0; j< this.contraintesHList.length; j++ ) {
+                if (this.contraintesHList[j][0] === second[5]){
+                  this.contraintesHList[j][parseInt(second[2].slice(1, -1))+1] = second[9];
+                } 
+              }
             }
           }
           this.equipe.contraintesH = JSON.parse(this.equipe.contraintesH.toString());
@@ -216,18 +224,6 @@ export class PlanningComponent implements OnInit {
       }
       );
     });
-  }
-
-  
-
-  private getCollaborateurNames(): void {
-    this.collaborateursNamesList.pop();
-    this.collaborateurs$.subscribe(collaborateurs => {
-      for (let collab of collaborateurs) {
-        this.collaborateursNamesList.push(collab['name']);
-      }
-    });
-    //this.collaborateursNamesList = this.dataService.getCollaborateurNames();
   }
   
 
@@ -247,6 +243,8 @@ export class PlanningComponent implements OnInit {
     this.add1();
     this.add2();
     this.add3();
+  //  console.log('daysList0', this.calendrierArray);
+  //  console.log('daysList01', this.calendrierArray[0]);
     return <FormArray>this.calendrierArray[0].get('days');
   }
 
@@ -266,10 +264,8 @@ export class PlanningComponent implements OnInit {
   }
 
   public dateFormat(date: Date): string {
-   // let jour = new Date(date);
     let year = date.getFullYear();
     let month = date.getMonth()+1;
-  //  if (month.toString().length <)
     let day = date.getDate();
     return year+'-'+month+'-'+day
   }
@@ -287,10 +283,7 @@ export class PlanningComponent implements OnInit {
            }
            let creneau = JSON.parse('["","white","00:00"]');
            if (trueDay['creneau'].indexOf('[') != 0) {
-            let premier = trueDay['creneau'].split(',');
-            creneau = [premier[0]];
-            creneau.push(premier[1] + ',' + premier[2] + ',' + premier[3]);
-            creneau.push(premier[4]);
+            creneau = trueDay['creneau'].split(',');
            }
            
           if ( this.equipe != undefined && this.equipe.collaborateursId != undefined ) {
@@ -511,10 +504,10 @@ export class PlanningComponent implements OnInit {
   onClickColor(element: string[], i: number, j: number, k: number, day: Date): void {
     let monElement = document.getElementById('color'+j+ k +i+ this.Z);
 
-    if ( element.length > 3 ) {
+   /* if ( element.length > 3 ) {
       element[1] = element[1]+ ',' + element[2] + ',' + element[3];
       element.splice(2, 2);
-    }
+    }*/
     if (monElement) {
       monElement.style.backgroundColor = element[1];
     }
@@ -525,12 +518,12 @@ export class PlanningComponent implements OnInit {
     }
   }
 
-  addValueResume(element: string[], j: number, k: number): void {
+  /*addValueResume(element: string[], j: number, k: number): void {
     let monElement = document.getElementById('resume'+j+ k + this.Z);
     if (monElement) {
       monElement.style.backgroundColor = element[1];
     }
-  }
+  }*/
 
   /** Fonction des jours à afficher */
   findDaysList(k: number): FormArray<any> {
@@ -550,7 +543,7 @@ export class PlanningComponent implements OnInit {
     this.showResume[k] = !this.showResume[k];
   }
 
-  onSelectionChange(event: Event, k: number, j: number): void {
+  /*onSelectionChange(event: Event, k: number, j: number): void {
     const element = event.target;
 
     if (element instanceof HTMLSelectElement) {
@@ -561,9 +554,9 @@ export class PlanningComponent implements OnInit {
         resumeVisible: list
       });
     }
-  }
+  }*/
 
-  addResume(k: number): void {
+/*  addResume(k: number): void {
     let list = this.calendrierArray[k].get('resumeVisible')?.value;
     list.push('');
     this.calendrierArray[k].patchValue({
@@ -581,7 +574,7 @@ export class PlanningComponent implements OnInit {
     this.calendrierArray[k].patchValue({
       resumeVisible: list
     });
-  }
+  }*/
 
   setTotal(balise: string, i: number, k: number, target: number): void {
     const id = balise + i.toString() + k.toString() + this.Z;
@@ -618,24 +611,35 @@ export class PlanningComponent implements OnInit {
     }
     
 
-    const maDiv = document.getElementById(id);
+    const maDiv = document.getElementById(id); 
 
     let color = 'blue'; 
-    let delta = target - parseInt(total);
+    let backgroundColor = 'white'; 
+    let delta = parseInt(total) - target;
+    let diff = delta.toString();
     if (delta === 0) {
-      color = 'green';
+      color = '#458e74';
+    } else if (delta > 0) {
+      color = '#458e74';
+      backgroundColor = '#e6f5f0ff';
+      diff = '+' + delta;
     } else {
-      color = 'red';
+      color = '#be0000';
+      backgroundColor = '#faebebff';
     }
 
     if ( maDiv != null) {
+      maDiv.style.backgroundColor = backgroundColor;
       maDiv.style.color = color;
-      maDiv.innerHTML = total + ' [' + delta + ']';
+      maDiv.innerHTML = diff;
     }
   }
 
   addition(num: string, element: string): string {
     let temps = element.slice(-5);
+    if (element[0] === '[') {
+      temps = element.slice(-7, -2);
+    }
     let minute = parseInt(temps.slice(-2)) + parseInt(num.slice(-2));
     let heure = parseInt(temps.slice(0,2)) + parseInt(num.slice(0,2));
     if ( minute > 59 ) {
@@ -706,7 +710,7 @@ export class PlanningComponent implements OnInit {
   } */
 
 
-  onContrainteHChange(event: Event, k: number, j: number): void {
+  /*onContrainteHChange(event: Event, k: number, j: number): void {
     const element = event.target;
     if (element instanceof HTMLInputElement) {
       let list = this.calendrierArray[k].get('contraintesH')?.value;
@@ -717,9 +721,9 @@ export class PlanningComponent implements OnInit {
       });
         this.collaborateursTime(list[j], k, j);
     }
-  }
+  }*/
 
-  onContrainteCChange(event: Event, k: number, j: number): void {
+  /*onContrainteCChange(event: Event, k: number, j: number): void {
     const element = event.target;
     if (element instanceof HTMLSelectElement) {
       let list = this.calendrierArray[k].get('contraintesC')?.value;
@@ -734,7 +738,7 @@ export class PlanningComponent implements OnInit {
         this.calcul(horaire, list[j], k, j);
       }
     }
-  }
+  }*/
 
   numberChange(day: Date, creneau: string[], k: number, j: number): void {
     if (creneau[0].length === 5 && creneau[0].indexOf(":")=== 2 ) {
@@ -746,7 +750,12 @@ export class PlanningComponent implements OnInit {
 
   numberChangeInit(k: number): void {
     for (let j =0; j < this.contraintesHList.length; j++) {
-        this.numberChange(this.week[k][0], this.contraintesHList[j], k, j);
+        for (let i = 0; i<7; i++) {
+          setTimeout(() => {
+          this.numberChange(this.week[k][i], this.contraintesHList[j], k, j);
+        }, 10);
+        }
+
       }
   }
 
@@ -755,7 +764,6 @@ export class PlanningComponent implements OnInit {
     if (i<0) { i = 6; }
     let id = 'time'+k+i+l + this.Z;
     let compte = 0;
-    const maDiv = document.getElementById(id);
     let daysList = this.findDaysList(k);
     for(let j=0; j < daysList.controls.length; j++) {
       let date = daysList.controls[j].value['date'];
@@ -764,23 +772,53 @@ export class PlanningComponent implements OnInit {
         compte += 1;
       }
     }
-    let jour = day.getDay()+1;
-    
-    let color = 'blue';
-    if (compte === parseInt(creneau[jour])) {
-      color = 'green';
-    } else {
-      color = 'red';
-    }
+    let jour = i+1;
+
+    const maDiv = document.getElementById(id); 
+
+    let color = 'blue'; 
+    let backgroundColor = 'white'; 
     let value = parseInt(creneau[jour]);
     if (typeof value === "string") {
       value = parseInt(value);
     }
-      let delta = value - compte;
+    console.log('dif', compte, value, creneau, creneau[jour], jour);
+    let delta = compte - value;
+    let diff = delta.toString();
+    if (delta === 0) {
+      color = '#458e74';
+    } else if (delta > 0) {
+      color = '#458e74';
+      backgroundColor = '#e6f5f0ff';
+      diff = '+' + delta;
+    } else {
+      color = '#be0000';
+      backgroundColor = '#faebebff';
+    }
+
+    if ( maDiv != null) {
+      maDiv.style.backgroundColor = backgroundColor;
+      maDiv.style.color = color;
+      maDiv.innerHTML = diff;
+    }
+    
+   /* let color = 'blue';
+    if (compte === parseInt(creneau[i])) {
+      color = 'green';
+    } else {
+      color = 'red';
+    }
+    let value = parseInt(creneau[i]);
+    if (typeof value === "string") {
+      value = parseInt(value);
+    }
+    
+   
+      let delta = compte - value;
       if ( maDiv != null) {
         maDiv.style.color = color;
         maDiv.innerHTML = compte + ' [' + delta + ']';
-      }
+      }*/
   }
 
   /** Afficher le nombre de collaborateurs à une heure donnée */
@@ -829,26 +867,30 @@ export class PlanningComponent implements OnInit {
         }
       }
 
-
       let list = daysList.get('contraintesH')?.value;
       for(let i=0; i<7; i++) {
-        let color = 'blue';
-        if (compte[i] === parseInt(creneau[i+1])) {
-          color = 'green';
-        } else {
-          color = 'red';
-        }
+        let color = 'blue'; 
+        let backgroundColor = 'white';
         let value = parseInt(creneau[i+1]);
-     /*   if (typeof value === "string") {
-          value = parseInt(value);
-        }*/
-        let delta = value - compte[i];
+        let delta = compte[i] - value ;
+        let diff = delta.toString();
+        if (compte[i] === parseInt(creneau[i+1])) {
+          color = '#458e74';
+        } else if  (compte[i] > parseInt(creneau[i+1])) {
+          color = '#458e74';
+          backgroundColor = '#e6f5f0ff';
+          diff = '+' + delta;
+        } else {
+          color = '#be0000';
+          backgroundColor = '#faebebff';
+        }
 
         let id = 'time'+k+i +l + this.Z;
         const maDiv = document.getElementById(id);
         if ( maDiv != null) {
+          maDiv.style.backgroundColor = backgroundColor;
           maDiv.style.color = color;
-          maDiv.innerHTML = compte[i] + ' [' + delta + ']';
+          maDiv.innerHTML = diff;
         } 
       }
   }
@@ -997,21 +1039,26 @@ export class PlanningComponent implements OnInit {
   }
 
   getCreneau(j: number, k: number, i: number): [string, string, string] {
+   // console.log('getCreneauFun', j, k, i)
     let daysList = this.findDaysList(k);
     if ( this.equipe != undefined && this.equipe.collaborateursId != undefined ) {
       let collaborateur = this.equipe.collaborateursId[j];
+     // console.log('test1');
       for(let l=0; l < daysList.controls.length; l++) {
         let date = daysList.controls[l].value['date'];
-        
+     //   console.log('test2');
         if ( date.getDay() === ((i + 1) % 7) && daysList.controls[l].value['collaborateurId'] === parseInt(collaborateur)) {
           let creneau = daysList.controls[l].value['creneau'];
+       //   console.log('test3', creneau);
           if ( typeof creneau === "string" ) {
             creneau = creneau.split(",");
           }
+        //  console.log('test4', creneau);
           return creneau;
         } 
       }
     }
+  //  console.log('test5')
     return ["", 'white', '00:00']
     }
 
@@ -1054,6 +1101,7 @@ export class PlanningComponent implements OnInit {
 
   annulerCopy(creneau: string[], i: number, j: number, k: number, day: Date): void {
     this.bandeAnnulerCopy = false;
+   // console.log('annulerCopy', creneau, this.creneauCopy);
     this.onClickColor(creneau, i, j, k, day);
     this.setCreneau(creneau, i, j, k, day);
   }
@@ -1061,6 +1109,7 @@ export class PlanningComponent implements OnInit {
   clickCopy(): void {
     this.bandeAnnulerCopy = false;
     const maDiv = document.getElementById('annulerCopy'+ this.Z);
+  //  console.log('clickCopy',this.creneauCopy, this.iCopy, this.jCopy, this.kCopy, this.dayCopy);
     this.annulerCopy(this.creneauCopy, this.iCopy, this.jCopy, this.kCopy, this.dayCopy);
     if ( maDiv != null ) {
       maDiv.style.display = 'none';
@@ -1122,16 +1171,22 @@ export class PlanningComponent implements OnInit {
         let k2 = parseInt(data.slice(-4, -3));
         let i2 = parseInt(data.slice(-3, -2));
       }
+      //console.log('getCreneau', j, k, i, j2, k2, i2);
       let creneau2 = this.getCreneau(j2, k2, i2);
       let day2 = this.getSwapDay(j, k, i);
 
       let creneau = this.getCreneau(j, k, i);
+    //  console.log('creneau', creneau);
+      if (creneau[0] === '[""') {
+        creneau[0] = '""';
+      }
       let day = this.getSwapDay(j2, k2, i2);
 
       this.onClickColor(creneau2, i, j, k, day2);
       this.setCreneau(creneau2, i, j, k, day2);
       
       this.creneauCopy = creneau;
+    //  console.log('creneauCopy', this.creneauCopy);
       this.iCopy = i;
       this.jCopy = j;
       this.kCopy = k;
@@ -1190,22 +1245,6 @@ export class PlanningComponent implements OnInit {
       this.promptAnnulerSwap();
     }
   }
-
-  creneauCopy = [""];
-  iCopy = 0;
-  jCopy = 0;
-  kCopy = 0;
-  dayCopy = new Date();
-  creneauSwap = [""];
-  iSwap = 0;
-  jSwap = 0;
-  kSwap = 0;
-  daySwap = new Date();
-  creneauSwap2 = [""];
-  iSwap2 = 0;
-  jSwap2 = 0;
-  kSwap2 = 0;
-  daySwap2 = new Date();
 
 
   /** Copier-Coller d'un jour ou d'un collaborateur */
@@ -1544,7 +1583,8 @@ export class PlanningComponent implements OnInit {
         let list2 = JSON.stringify(this.equipe.list2[l]).split('"');
         for( let m=1; m<CList.length-2; m++) {
           if ( list2[3] === CList[m] && list2[7] === CList[m+1] ) {
-            if ( list2[11] === ':true}') {
+            console.log(list2)
+            if ( list2[10] === ':true}') {
               couleurList[m] = '#ec6a6a';
               couleurList[m+1] = '#ec6a6a';
             } else {
@@ -1565,7 +1605,8 @@ export class PlanningComponent implements OnInit {
         let list3 = JSON.stringify(this.equipe.list3[l]).split('"');
         for( let m=0; m<CList.length-2; m++) {
           if ( list3[3] === CList[m] && list3[7] === CList[m+1] && list3[11] === CList[m+2] ) {
-            if ( list3[15] === ':true}') {
+            console.log(list3)
+            if ( list3[14] === ':true}') {
               couleurList[m] = '#ec6a6a';
               couleurList[m+1] = '#ec6a6a';
               couleurList[m+2] = '#ec6a6a';

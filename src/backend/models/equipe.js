@@ -1,7 +1,7 @@
 const db = require('../util/database');
 
 module.exports = class Equipe {
-    constructor(name, user, creneauHours, creneauText, collaborateursId, list2, list3, contraintesC, contraintesH, resume) {
+    constructor(name, user, creneauHours, creneauText, collaborateursId, list2, list3, contraintesC, contraintesH) {
         this.name = name;
         this.user = user;
         this.creneauHours = creneauHours;
@@ -11,7 +11,6 @@ module.exports = class Equipe {
         this.list3 = list3;
         this.contraintesC = contraintesC;
         this.contraintesH = contraintesH;
-        this.resume = resume;
     }
 
     static fetchAll(userID) {
@@ -29,8 +28,8 @@ module.exports = class Equipe {
     static save(equipe) {
         console.log('try saving')
         return db.execute(
-            'INSERT INTO equipe (name, user, creneauHours, creneauText, collaborateursId, list2, list3, contraintesC, contraintesH, resume) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-            [equipe.name, equipe.user, equipe.creneauHours, equipe.creneauText, equipe.collaborateursId, equipe.list2, equipe.list3, equipe.contraintesC, equipe.contraintesH, equipe.resume]
+            'INSERT INTO equipe (name, user, creneauHours, creneauText, collaborateursId, list2, list3, contraintesC, contraintesH) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [equipe.name, equipe.user, equipe.creneauHours, equipe.creneauText, equipe.collaborateursId, equipe.list2, equipe.list3, equipe.contraintesC, equipe.contraintesH]
         )
     }
 
@@ -38,8 +37,8 @@ module.exports = class Equipe {
         //console.log('equipe', equipe);
         console.log('try update')
         return db.execute(
-            'UPDATE equipe SET name = ?, user = ?, creneauHours = ?, creneauText = ?, collaborateursId = ?, list2 = ?, list3 = ?, contraintesC = ?, contraintesH = ?, resume = ? WHERE id = ?', 
-            [equipe.name, equipe.user, equipe.creneauHours, equipe.creneauText, equipe.collaborateursId, equipe.list2, equipe.list3, equipe.contraintesC, equipe.contraintesH, equipe.resume, equipe.id]
+            'UPDATE equipe SET name = ?, user = ?, creneauHours = ?, creneauText = ?, collaborateursId = ?, list2 = ?, list3 = ?, contraintesC = ?, contraintesH = ? WHERE id = ?', 
+            [equipe.name, equipe.user, equipe.creneauHours, equipe.creneauText, equipe.collaborateursId, equipe.list2, equipe.list3, equipe.contraintesC, equipe.contraintesH, equipe.id]
         )
     }
 

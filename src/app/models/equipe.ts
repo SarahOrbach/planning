@@ -9,5 +9,4 @@ export interface Equipe {
     list3?: Array<string>;
     contraintesC?: string; // contraintes du collaborateur
     contraintesH?: string; // contraintes sur les heures
-    resume?: string;
 }

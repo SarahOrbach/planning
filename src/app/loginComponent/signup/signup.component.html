@@ -1,6 +1,6 @@
 <form *ngIf="auth()" [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
   <nb-card>
-    <nb-card-header> Authentification</nb-card-header>
+    <nb-card-header> Créer un compte</nb-card-header>
     <nb-card-body
       ><br />
       <nb-form-field class="element field">
@@ -35,7 +35,7 @@
         [disabled]="!signupForm.valid"
         type="submit"
       >
-        Se connecter</button
+        Valider</button
       ><br /><br />
     </nb-card-body>
   </nb-card>

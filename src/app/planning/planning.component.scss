@@ -1,27 +1,22 @@
-table, td {
-  border: 1px solid rgb(242, 242, 243);
-  z-index: 9999;
+
+.grid-item-equipe-collab {
+  height: 35.5px;
 }
 
-tr {
-  height:20px;
-  border: 1px solid red;
+.grid-item-equipe-titre {
+  height: 24.5px;
 }
 
-.tr1 {
-  height: 10px;
-}
-
-a {
-  border: 1px solid black;
+.bottom {
+  display: relative;
+  top: 30px;
 }
 
 h2 {
-  border: 1px solid black;
   height: 20px;
   display: flex;
   justify-content: space-between;
-  color: rgb(60, 130, 200);
+  color: #3c82c8;
   font-size: 15px; 
   //margin: 0;
   padding-left: 5px;
@@ -32,9 +27,8 @@ h2 {
 }
 
 h3 {
-  border: 1px solid blue;
   height: 20px;
-  color: rgb(60, 130, 200);
+  color: #3c82c8;
   font-size: 12px;
   margin: 0;
   padding: 0;
@@ -250,18 +244,6 @@ h3 {
   justify-content: left;
 }
 
-.grid-item-prompt-contrainteC {
-  color: rgb(60, 130, 200);
-  border: 1px solid rgba(235, 233, 233, 0.8);
-  padding: 2px;
-  font-size: 11px;
-  text-align: center;
-  min-width: 125px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-}
-
 .grid-item-prompt-contrainte {
   color: rgb(60, 130, 200);
   border: 1px solid rgba(235, 233, 233, 0.8);
@@ -290,10 +272,10 @@ h3 {
   left: 5px;
 }
 
-.left {
+/*.left {
   position: relative;
   right: 5px;
-}
+}*/
 
 .buttonContrainteH {
   margin-top: 8px;
@@ -325,8 +307,25 @@ h3 {
   text-align: center;
   min-width: 90px;
   font-weight: bold;
-  height: 30px;
+  height: 24.5px;
   display: flex;
 }
 
+.contrainteCollab {
+  border: 1px solid rgba(235, 233, 233, 0.8);
+  max-width: 50px;
+  min-width: 45px;
+ // height: 30px;
+  color: black;
+}
 
+.contrainte {
+  display: flex;
+  height: 35.5px;
+}
+
+.contrainteH {
+  display: grid;
+  height: 25.5px;
+  grid-template-columns: auto auto;
+}

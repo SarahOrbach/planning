@@ -49,14 +49,14 @@ export class EquipeService {
     let list3 = JSON.stringify(formData.list3);
     //console.log(formData.creneauText);
     return this.http
-      .post<Equipe>(`${this.url}`, { name: formData.name, user: userId, creneauHours: hours, creneauText: text, collaborateursId: collab, list2: list2, list3: list3, contraintesC: formData.contraintesC, contraintesH: formData.contraintesH, resume: formData.resume }, this.httpOptions)
+      .post<Equipe>(`${this.url}`, { name: formData.name, user: userId, creneauHours: hours, creneauText: text, collaborateursId: collab, list2: list2, list3: list3, contraintesC: formData.contraintesC, contraintesH: formData.contraintesH }, this.httpOptions)
       .pipe(
         catchError(this.errorHandlerService.handleError<Equipe>("createEquipe"))
     );
   }
 
   updateEquipe(formData: Partial<Equipe>, equipeId: number, userId: Pick<User, "id">): Observable<Equipe> {
-    //console.log('create');
+
     //console.log(formData);
     //console.log(formData.creneauHours?.values);
     let collab = JSON.stringify(formData.collaborateursId);
@@ -68,7 +68,7 @@ export class EquipeService {
     let contraintesH = JSON.stringify(formData.contraintesH);
     //console.log(formData.creneauText);
     return this.http
-      .put<Equipe>(`${this.url}/general`, { id: equipeId, name: formData.name, user: userId, creneauHours: hours, creneauText: text, collaborateursId: collab, list2: list2, list3: list3, contraintesC: contraintesC, contraintesH: contraintesH, resume: formData.resume }, this.httpOptions)
+      .put<Equipe>(`${this.url}/general`, { id: equipeId, name: formData.name, user: userId, creneauHours: hours, creneauText: text, collaborateursId: collab, list2: list2, list3: list3, contraintesC: contraintesC, contraintesH: contraintesH }, this.httpOptions)
       .pipe(
         catchError(this.errorHandlerService.handleError<Equipe>("createEquipe"))
     );

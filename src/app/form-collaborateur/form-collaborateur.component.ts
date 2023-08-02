@@ -112,7 +112,6 @@ export class FormCollaborateurComponent {
         this.equipesNames.push(eq['name']);
       }
     });
-    //this.equipesNames = this.dataService.equipesNames();
   }
 
 }

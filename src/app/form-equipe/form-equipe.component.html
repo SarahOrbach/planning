@@ -65,23 +65,17 @@
                 </div>
                 <div class="col-sm-11 col-md-11 container">
                   <div class="grid-item">
-                    <label class="titre" attr.for="cBegin + {{ i }}"
-                      >Début *</label
-                    >
+                    <label class="titre" attr.for="B + {{ i }}">Début *</label>
                     <input
                       type="time"
-                      id="cBegin + {{ i }}"
-                      formControlName="cBegin"
+                      id="B + {{ i }}"
+                      formControlName="B"
                       class="form-control contenu"
                       (keyup)="
-                        checkAndMoveToNextField(
-                          creneau,
-                          'cBegin',
-                          'cEnd + ' + i
-                        )
+                        checkAndMoveToNextField(creneau, 'B', 'E + ' + i)
                       "
                       [ngClass]="{
-                        'is-invalid': getControls(creneau, 'cBegin')
+                        'is-invalid': getControls(creneau, 'B')
                       }"
                     />
                     <div class="invalid-feedback">
@@ -96,21 +90,17 @@
                   </div>
 
                   <div class="grid-item">
-                    <label class="titre" attr.for="cEnd + {{ i }}">Fin *</label>
+                    <label class="titre" attr.for="E + {{ i }}">Fin *</label>
                     <input
                       type="time"
-                      id="cEnd + {{ i }}"
-                      formControlName="cEnd"
+                      id="E + {{ i }}"
+                      formControlName="E"
                       class="form-control contenu"
                       (keyup)="
-                        checkAndMoveToNextField(
-                          creneau,
-                          'cEnd',
-                          'cPause + ' + i
-                        )
+                        checkAndMoveToNextField(creneau, 'E', 'P + ' + i)
                       "
                       [ngClass]="{
-                        'is-invalid': getControls(creneau, 'cEnd')
+                        'is-invalid': getControls(creneau, 'E')
                       }"
                     />
                     <div class="invalid-feedback">
@@ -121,29 +111,27 @@
                   </div>
 
                   <div class="grid-item">
-                    <label class="titre" attr.for="cColor + {{ i }}"
-                      >Couleur</label
-                    >
-                    <div id="cColor + {{ i }}">
+                    <label class="titre" attr.for="C + {{ i }}">Couleur</label>
+                    <div id="C + {{ i }}">
                       <button
                         type="button"
-                        id="buttoncColor{{ i }}"
+                        id="buttonC{{ i }}"
                         class="colorButton"
-                        (click)="display(i, 'cColor')"
+                        (click)="display(i, 'C')"
                       >
                         <nb-icon
-                          id="icon1cColor{{ i }}"
+                          id="icon1C{{ i }}"
                           icon="arrow-ios-upward-outline"
                         ></nb-icon>
                         <nb-icon
                           style="display: none"
-                          id="icon2cColor{{ i }}"
+                          id="icon2C{{ i }}"
                           icon="arrow-ios-downward-outline"
                         ></nb-icon>
                       </button>
                     </div>
                     <table
-                      id="tablecColor{{ i }}"
+                      id="tableC{{ i }}"
                       style="width: 100%; display: none"
                     >
                       <tr>
@@ -152,7 +140,7 @@
                             type="button"
                             class="color"
                             [ngClass]="setCouleur(l, 1)"
-                            (click)="onClickCouleur(color, i, 'cColor')"
+                            (click)="onClickCouleur(color, i, 'C')"
                           ></button>
                         </td>
                       </tr>
@@ -162,7 +150,7 @@
                             type="button"
                             class="color"
                             [ngClass]="setCouleur(l, 2)"
-                            (click)="onClickCouleur(color, i, 'cColor')"
+                            (click)="onClickCouleur(color, i, 'C')"
                           ></button>
                         </td>
                       </tr>
@@ -172,7 +160,7 @@
                             type="button"
                             class="color"
                             [ngClass]="setCouleur(l, 3)"
-                            (click)="onClickCouleur(color, i, 'cColor')"
+                            (click)="onClickCouleur(color, i, 'C')"
                           ></button>
                         </td>
                       </tr>
@@ -182,7 +170,7 @@
                             type="button"
                             class="color"
                             [ngClass]="setCouleur(l, 4)"
-                            (click)="onClickCouleur(color, i, 'cColor')"
+                            (click)="onClickCouleur(color, i, 'C')"
                           ></button>
                         </td>
                       </tr>
@@ -190,16 +178,16 @@
                   </div>
 
                   <div class="grid-item">
-                    <label class="titre" attr.for="cPause + {{ i }}"
+                    <label class="titre" attr.for="P + {{ i }}"
                       >Pause (en min.)</label
                     >
                     <input
                       type="text"
-                      id="cPause + {{ i }}"
-                      formControlName="cPause"
+                      id="P + {{ i }}"
+                      formControlName="P"
                       class="form-control contenu"
                       [ngClass]="{
-                        'is-invalid': getControls(creneau, 'cPause')
+                        'is-invalid': getControls(creneau, 'P')
                       }"
                     />
                     <div class="invalid-feedback">
@@ -208,27 +196,27 @@
                   </div>
 
                   <div class="grid-item">
-                    <label class="titre" attr.for="'cTime' + {{ i }}"
+                    <label class="titre" attr.for="'T' + {{ i }}"
                       >Temps effectif du shift</label
                     >
                     <input
                       type="string"
-                      id="'cTime' + {{ i }}"
-                      formControlName="cTime"
+                      id="'T' + {{ i }}"
+                      formControlName="T"
                       class="form-control contenuReadOnly"
                       readonly
                       pattern="[0-9]{2}:[0-9]{2}"
                       [value]="
                         calcul(
                           i,
-                          creneau.value['cPause'],
-                          creneau.value['cEnd'],
-                          creneau.value['cBegin']
+                          creneau.value['P'],
+                          creneau.value['E'],
+                          creneau.value['B']
                         )
                       "
                       value="[value]"
                       [ngClass]="{
-                        'is-invalid': getControls(creneau, 'cTime')
+                        'is-invalid': getControls(creneau, 'T')
                       }"
                     />
                     <div class="invalid-feedback">
@@ -239,14 +227,14 @@
                   </div>
 
                   <div class="grid-item">
-                    <label class="titre" attr.for="'cDescription' + {{ i }}"
+                    <label class="titre" attr.for="'D' + {{ i }}"
                       >Description</label
                     >
                     <input
                       type="text"
-                      id="{{ 'cDescription' + i }}"
+                      id="{{ 'D' + i }}"
                       class="form-control contenu"
-                      formControlName="cDescription"
+                      formControlName="D"
                     />
                   </div>
                 </div>
@@ -292,9 +280,7 @@
                   </button>
                 </div>
                 <div class="col-sm-4 col-md-3">
-                  <label class="titre" attr.for="'cTextName' + {{ i }}"
-                    >Titre *</label
-                  >
+                  <label class="titre" attr.for="'TN' + {{ i }}">Titre *</label>
                   <input
                     #autoInput
                     nbInput
@@ -302,10 +288,10 @@
                     (input)="onChange()"
                     [nbAutocomplete]="auto"
                     class="form-control contenu"
-                    formControlName="cTextName"
-                    id="'cTextName' + {{ i }}"
+                    formControlName="TN"
+                    id="'TN' + {{ i }}"
                     [ngClass]="{
-                      'is-invalid': getControls(text, 'cTextName')
+                      'is-invalid': getControls(text, 'TN')
                     }"
                   />
                   <div class="invalid-feedback">
@@ -313,7 +299,7 @@
                   </div>
                   <nb-autocomplete
                     #auto
-                    id="'cTextName' + {{ i }}"
+                    id="'TN' + {{ i }}"
                     (selectedChange)="onSelectionChange($event)"
                   >
                     <nb-option
@@ -326,16 +312,16 @@
                 </div>
 
                 <div class="col-sm-4 col-md-2">
-                  <label class="titre" attr.for="'cTextHours' + {{ i }}"
+                  <label class="titre" attr.for="'TH' + {{ i }}"
                     >Temps effectif</label
                   >
                   <input
                     type="time"
-                    id="'cTextHours' + {{ i }}"
-                    formControlName="cTextHours"
+                    id="'TH' + {{ i }}"
+                    formControlName="TH"
                     class="form-control contenu"
                     [ngClass]="{
-                      'is-invalid': getControls(text, 'cTextHours')
+                      'is-invalid': getControls(text, 'TH')
                     }"
                   />
                   <div class="invalid-feedback">
@@ -344,38 +330,33 @@
                 </div>
 
                 <div class="col-sm-2 col-md-1">
-                  <label class="titre" attr.for="cTextColor + {{ i }}"
-                    >Couleur</label
-                  >
-                  <div id="cTextColor + {{ i }}">
+                  <label class="titre" attr.for="TC + {{ i }}">Couleur</label>
+                  <div id="TC + {{ i }}">
                     <button
                       type="button"
-                      id="buttoncTextColor{{ i }}"
+                      id="buttonTC{{ i }}"
                       class="colorButton"
-                      (click)="display(i, 'cTextColor')"
+                      (click)="display(i, 'TC')"
                     >
                       <nb-icon
-                        id="icon1cTextColor{{ i }}"
+                        id="icon1TC{{ i }}"
                         icon="arrow-ios-upward-outline"
                       ></nb-icon>
                       <nb-icon
                         style="display: none"
-                        id="icon2cTextColor{{ i }}"
+                        id="icon2TC{{ i }}"
                         icon="arrow-ios-downward-outline"
                       ></nb-icon>
                     </button>
                   </div>
-                  <table
-                    id="tablecTextColor{{ i }}"
-                    style="width: 100%; display: none"
-                  >
+                  <table id="tableTC{{ i }}" style="width: 100%; display: none">
                     <tr>
                       <td *ngFor="let color of colors1; let l = index">
                         <button
                           type="button"
                           class="color"
                           [ngClass]="setCouleur(l, 1)"
-                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                          (click)="onClickCouleur(color, i, 'TC')"
                         ></button>
                       </td>
                     </tr>
@@ -385,7 +366,7 @@
                           type="button"
                           class="color"
                           [ngClass]="setCouleur(l, 2)"
-                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                          (click)="onClickCouleur(color, i, 'TC')"
                         ></button>
                       </td>
                     </tr>
@@ -395,7 +376,7 @@
                           type="button"
                           class="color"
                           [ngClass]="setCouleur(l, 3)"
-                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                          (click)="onClickCouleur(color, i, 'TC')"
                         ></button>
                       </td>
                     </tr>
@@ -405,7 +386,7 @@
                           type="button"
                           class="color"
                           [ngClass]="setCouleur(l, 4)"
-                          (click)="onClickCouleur(color, i, 'cTextColor')"
+                          (click)="onClickCouleur(color, i, 'TC')"
                         ></button>
                       </td>
                     </tr>
@@ -413,14 +394,14 @@
                 </div>
 
                 <div class="col-sm-6 col-md-4">
-                  <label class="titre" attr.for="'tDescription' + {{ i }}"
+                  <label class="titre" attr.for="'TD' + {{ i }}"
                     >Description</label
                   >
                   <input
                     type="text"
-                    id="{{ 'tDescription' + i }}"
+                    id="{{ 'TD' + i }}"
                     class="form-control contenu"
-                    formControlName="tDescription"
+                    formControlName="TD"
                   />
                 </div>
               </div>
@@ -471,7 +452,7 @@
                     >
                     <select
                       class="form-control contenu"
-                      formControlName="creneau1"
+                      formControlName="c1"
                       id="21 + {{ i }}"
                     >
                       <option
@@ -492,7 +473,7 @@
                     >
                     <select
                       class="form-control contenu"
-                      formControlName="creneau2"
+                      formControlName="c2"
                       id="22 + {{ i }}"
                     >
                       <option
@@ -514,11 +495,11 @@
                     <nb-toggle
                       class="form-control"
                       id="autoriser + {{ i }}"
-                      formControlName="interdit"
+                      formControlName="int"
                       labelPosition="right"
                     >
-                      <span *ngIf="text.value['interdit']">non autorisée</span>
-                      <span *ngIf="!text.value['interdit']">déconseillée</span>
+                      <span *ngIf="text.value['int']">non autorisée</span>
+                      <span *ngIf="!text.value['int']">déconseillée</span>
                     </nb-toggle>
                   </div>
                 </div>
@@ -569,7 +550,7 @@
                     >
                     <select
                       class="form-control contenu"
-                      formControlName="creneau1"
+                      formControlName="c1"
                       id="31 + {{ i }}"
                     >
                       <option
@@ -590,7 +571,7 @@
                     >
                     <select
                       class="form-control contenu"
-                      formControlName="creneau2"
+                      formControlName="c2"
                       id="32 + {{ i }}"
                     >
                       <option
@@ -611,7 +592,7 @@
                     >
                     <select
                       class="form-control contenu"
-                      formControlName="creneau3"
+                      formControlName="c3"
                       id="33 + {{ i }}"
                     >
                       <option
@@ -633,11 +614,11 @@
                     <nb-toggle
                       class="form-control"
                       id="autoriser + {{ i }}"
-                      formControlName="interdit"
+                      formControlName="int"
                       labelPosition="right"
                     >
-                      <span *ngIf="text.value['interdit']">non autorisée</span>
-                      <span *ngIf="!text.value['interdit']">déconseillée</span>
+                      <span *ngIf="text.value['int']">non autorisée</span>
+                      <span *ngIf="!text.value['int']">déconseillée</span>
                     </nb-toggle>
                   </div>
                 </div>

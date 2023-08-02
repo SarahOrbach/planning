@@ -15,26 +15,36 @@
   <!-- Première colonne : nom de l'équipe et noms des collaborateurs -->
   <nb-card-body class="row">
     <nb-card-body class="col-sm-3 col-md-2">
-      <table
+      <div
+        class="grid-container-row"
         *ngIf="equipe != undefined && equipe.collaborateursId != undefined"
       >
-        <h2>
-          <div class="test">{{ equipe.name }}</div>
-          <a routerLink="/detail/{{ equipe.id }}"
-            ><nb-icon icon="edit-2-outline"></nb-icon
-          ></a>
-          <button size="small" nbButton ghost type="button" (click)="open()">
-            <nb-icon icon="trash-2-outline"></nb-icon>
-          </button>
-        </h2>
+        <div class="grid-item-equipe-titre">
+          <h2>
+            <button
+              size="small"
+              class="bottom"
+              nbButton
+              ghost
+              type="button"
+              (click)="open()"
+            >
+              <nb-icon icon="trash-2-outline"></nb-icon>
+            </button>
+            <div>{{ equipe.name }}</div>
+            <a routerLink="/detail/{{ equipe.id }}"
+              ><nb-icon icon="edit-2-outline"></nb-icon
+            ></a>
+          </h2>
+        </div>
 
-        <tr
-          class="grid-item-collaborateur"
+        <div
+          class="grid-item-equipe-collab"
           *ngFor="let collaborateur of equipe.collaborateursId; let i = index"
         >
           <h3>{{ collaborateursNamesList[i] }}</h3>
-        </tr>
-      </table>
+        </div>
+      </div>
     </nb-card-body>
 
     <!-- Planning : le planning se répète le nombre de fois qu'il y a de semaines, c'est-à-dire au plus 4. (calendrierArray.length) -->
@@ -52,7 +62,6 @@
                 #formDirective="ngForm"
                 [formGroup]="calendrierForm"
               >
-                {{ calendrierForm.get("days[0]") }}
                 <div class="grid-container">
                   <!-- Deuxième colonne : visualisation des contraintes des collaborateurs -->
                   <!-- Menu déroulé -->
@@ -67,7 +76,7 @@
                           type="button"
                           (click)="showResumeFun(k)"
                         >
-                          <nb-icon icon="arrow-ios-downward-outline"></nb-icon>
+                          <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
                         </button>
                       </div>
                       <div
@@ -80,14 +89,20 @@
                         <div class="grid-item-name">{{ creneau }}</div>
 
                         <div
-                          class="grid-item"
+                          class="grid-item contrainte"
                           *ngFor="
                             let collaborateur of equipe.collaborateursId;
                             let i = index
                           "
                         >
-                          <div id="{{ creneau }}{{ i }}{{ k }}{{ Z }}"></div>
+                          <div
+                            class="contrainteCollab"
+                            id="{{ creneau }}{{ i }}{{ k }}{{ Z }}"
+                          ></div>
                           {{ setTotal(creneau, i, k, contraintesCList[i][j]) }}
+                          <div class="contrainteCollab">
+                            {{ contraintesCList[i][j] }}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -104,7 +119,7 @@
                         type="button"
                         (click)="showResumeFun(k)"
                       >
-                        <nb-icon icon="arrow-ios-upward-outline"></nb-icon>
+                        <nb-icon icon="arrow-ios-back-outline"></nb-icon>
                       </button></div
                   ></ng-template>
 
@@ -327,14 +342,35 @@
                               let j = index
                             "
                           >
-                            <div class="grid-item-prompt-contrainte">
+                            <div
+                              class="grid-item-prompt-contrainte contrainteH"
+                            >
                               <div
-                                class="element-item-prompt-contrainte left"
+                                class="contrainteCollab"
                                 id="time{{ k }}{{ i }}{{ j }}{{ Z }}"
-                              >
-                                Chargement time{{ k }}{{ i }}{{ j }}{{ Z }}
+                              ></div>
+                              <div class="contrainteCollab">
+                                {{ contraintesHList[j][i + 1] }}
                               </div>
                             </div>
+
+                            <!--   <div
+                          class="grid-item contrainte"
+                          *ngFor="
+                            let collaborateur of equipe.collaborateursId;
+                            let i = index
+                          "
+                        >
+                          <div
+                            class="contrainteCollab"
+                            id="{{ creneau }}{{ i }}{{ k }}{{ Z }}"
+                          ></div>
+                          {{ setTotal(creneau, i, k, contraintesCList[i][j]) }}
+                          <div class="contrainteCollab">
+                            {{ contraintesCList[i][j] }}
+                          </div>
+                        </div>
+                      -->
                           </div>
                         </div>
                       </div>

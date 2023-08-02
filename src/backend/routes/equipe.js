@@ -25,7 +25,6 @@ router.post(
         body('list3').trim(),
         body('contraintesC').trim(),
         body('contraintesH').trim(),
-        body('resume').trim(),
     ], equipeController.equipePost
 );
 
@@ -43,7 +42,6 @@ router.put(
         body('list3').trim(),
         body('contraintesC').trim(),
         body('contraintesH').trim(),
-        body('resume').trim(),
     ], equipeController.updateEquipe
 );
 

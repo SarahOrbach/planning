@@ -71,16 +71,21 @@ export class AppComponent implements OnInit {
     this.equipeService.fetchAll(this.userId).subscribe(
       equipes => { 
         this.equipesShow.pop();
+        let equipeNotExist = true;
         for (const [i, eq] of equipes.entries()) {
           if ( i === 0) {
             this.equipes = [eq];
             this.equipesShow.push(true);
+            equipeNotExist = false;
           } else {
             this.equipes.push(eq);
             this.equipesShow.push(true);
           }
           
         }
+      if (equipeNotExist) {
+        this.router.navigate(["/ajoutEquipe"]);
+      }
      } 
     );
   }

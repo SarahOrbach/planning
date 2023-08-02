@@ -48,17 +48,6 @@ export class CollaborateurDetailComponent {
     private route: ActivatedRoute
     ) {}
 
-    /**
-     *     name: string;
-    firstName?: string; 
-    lastName?: string;
-    mail?: string;
-    phone?: string;
-    teams?: Array<string>;
-    hours?: number;
-    days?: number;
-     */
-
   ngOnInit() { 
     this.userId = this.authService.userId;   
     this.getCollaborateur(); 
@@ -76,13 +65,6 @@ export class CollaborateurDetailComponent {
       hours: [],
       days:[]
     });
-   /* setTimeout(() => {
-      if ( this.collaborateur != undefined ) {
-      //this.setData(this.collaborateur);
-      
-        this.setData(this.collaborateur);
-      
-      }}, 1000);*/
   }
 
   // Initialisation de valeurs
@@ -154,7 +136,6 @@ export class CollaborateurDetailComponent {
   
   // Confirmation de suppression
   open() {
-    //suppression de l'ID du collaborateur dans les équipes
     this.dialogService.open(DeleteConfirmationComponent)
       .onClose.subscribe(result => {
         console.log(result[0]);
@@ -215,18 +196,6 @@ export class CollaborateurDetailComponent {
         this.collaborateur.teams = JSON.parse(this.collaborateur.teams.toString());
       }
       this.setData(this.collaborateur);
-      /*if ( this.equipe.creneauHours != undefined) {
-        this.equipe.creneauHours = JSON.parse(this.equipe.creneauHours.toString());
-      }
-      if ( this.equipe.creneauText != undefined) {
-        this.equipe.creneauText = JSON.parse(this.equipe.creneauText.toString());
-      }
-      if ( this.equipe.list2 != undefined) {
-        this.equipe.list2 = JSON.parse(this.equipe.list2.toString());
-      }
-      if ( this.equipe.list3 != undefined) {
-        this.equipe.list3 = JSON.parse(this.equipe.list3.toString());
-      }*/
     });
 
   }
@@ -245,7 +214,6 @@ export class CollaborateurDetailComponent {
         this.equipesNames.push(eq['name']);
       }
     });
-    //this.equipesNames = this.dataService.equipesNames();
   }
   
 }

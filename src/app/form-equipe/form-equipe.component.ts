@@ -31,24 +31,25 @@ export class FormEquipeComponent {
 
   collaborateursNamesList = ['']; // List des noms des collaborateurs
   collaborateursIdList = [0]; // List des noms des collaborateurs
+
   // Lists des couleurs
-  colors1 = [ 'rgb(255,230, 160)', 'rgb(210, 235, 190)', 'rgb(190, 225, 250)'];
-  colors2 = [ 'rgb(200, 220, 225)', 'rgb(225, 225, 255)', 'rgb(230, 210, 240)'];
-  colors3 = [ 'rgb(15, 125, 80)', 'rgb(15, 90, 190)', 'rgb(35, 95, 110)'];
-  colors4 = [ 'rgb(100, 100, 100)'];
+  colors1 = [ '#ffe6a0', '#d2ebbe', '#bee1fa'];
+  colors2 = [ '#c8dce1', '#e1e1e1', '#e6d2f0'];
+  colors3 = [ '#0f7d50', '#0f5abe', '#235f6e'];
+  colors4 = [ '#646464'];
 
   // Creneaux d'exemple à l'initialisation 
   exemple = [
     {
-        cTextName: 'Repos',
-        cTextColor: 'rgb(225, 225, 255)',
-        cTextHours: '00:00',
+        TN: 'Repos',
+        TC: '#e1e1e1',
+        TH: '00:00',
         V: true
     },
     {
-        cTextName: 'Formation',
-        cTextColor: 'rgb(200, 220, 225)',
-        cTextHours: '07:00',
+        TN: 'Formation',
+        TC: '#c8dce1',
+        TH: '07:00',
         V: true
     }
 ];
@@ -75,8 +76,7 @@ export class FormEquipeComponent {
       list2: this.fb.array([]),
       list3: this.fb.array([]),
       contraintesC: [''],
-      contraintesH: [''],
-      resume: ['']
+      contraintesH: ['']
     });
 
     // Creation de creneau text d'exemple
@@ -87,61 +87,13 @@ export class FormEquipeComponent {
     });
 
     setTimeout(() => {
-      this.setCouleurInit(this.exemple[0]['cTextColor'], 0);
-      this.setCouleurInit(this.exemple[1]['cTextColor'], 1);
+      this.setCouleurInit(this.exemple[0]['TC'], 0);
+      this.setCouleurInit(this.exemple[1]['TC'], 1);
     }, 1);
   }
   
   /** Ajout de l'équipe à la base de données */
-  onSubmit(formData: Pick<Equipe, "name" | "creneauHours" | "creneauText" | "collaborateursId" | "list2" | "list3" | "contraintesC" | "contraintesH" | "resume">) : void {
-    console.log('submit', this.userId);
-
-    /*for( let j = 0; j< this.collaborateursIdList.length; j++ ) {
-      console.log('try add equipe')
-      this.collaborateurService.fetch(this.userId, this.collaborateursIdList[j]).subscribe(
-        collab => {
-          let equipeList =JSON.parse(JSON.stringify(collab).slice(1,-1)).teams.slice(1, -1).split(",");
-          let collabId = JSON.parse(JSON.stringify(collab).slice(1,-1)).id;
-          if(formData.collaborateursId != undefined) {
-            let present = false; 
-            for( let i = 0; i< formData.collaborateursId.length; i++ ) {
-              if (parseInt(formData.collaborateursId[i]) === collabId) {
-                present = true;
-              }
-            } 
-            let actualPresent = false;
-            let position = 0;
-            if (equipeList[0] === '""' || equipeList.length === 0) {
-              equipeList = [];
-            } else {
-              for( let k = 0; k< equipeList.length; k++ ) {
-              if (equipeList[0] != '""' || equipeList.length != 0) {
-                equipeList[k] = parseInt(equipeList[k].slice(1, -1));
-                if ( equipeList[k] === this.equipe.id) {
-                  actualPresent = true;
-                  position = k;
-                }
-              } else {
-                equipeList.splice(k, k+1);
-              }
-               
-            }
-            }
-
-            if (actualPresent != present) {
-              if (actualPresent) {
-                equipeList.splice(position, position+1);
-              } else if (present) {
-                equipeList.push(this.equipe.id)
-              }
-              this.collaborateurService.updateEq(equipeList,collabId).subscribe();
-            }
-          }
-        }
-      )
-  }*/
-
-    console.log(formData);
+  onSubmit(formData: Pick<Equipe, "name" | "creneauHours" | "creneauText" | "collaborateursId" | "list2" | "list3" | "contraintesC" | "contraintesH">) : void {
     this.equipeService.createEquipe(formData, this.userId).subscribe(res => {
       let equipeId = JSON.parse(JSON.stringify(res))['message'][0]['insertId'];
       if (formData.collaborateursId != undefined ) {
@@ -150,7 +102,6 @@ export class FormEquipeComponent {
             collaborateur => {
               let equipeList =JSON.parse(JSON.stringify(collaborateur).slice(1,-1)).teams.slice(1, -1).split(",");
               let collaborateurId = JSON.parse(JSON.stringify(collaborateur).slice(1,-1)).id;
-              console.log('equipeList', equipeList);
                 if (equipeList[0] === '""' || equipeList.length === 0) {
                   equipeList = [equipeId];
                 } else {
@@ -197,12 +148,12 @@ export class FormEquipeComponent {
   /** FormArray : Gestion des éléments groupés des créneaux horaires */
   private createCreneauHoursGroup(): FormGroup {
     return this.fb.group({
-      cBegin: ['', Validators.required],
-      cEnd: ['', Validators.required],
-      cPause: ['0', Validators.required],
-      cTime: ['00:00', Validators.pattern("[0-9]{2}:[0-9]{2}")],
-      cColor: ['gris'],
-      cDescription: [''],
+      B: ['', Validators.required], //Begin
+      E: ['', Validators.required], //End
+      P: ['0', Validators.required], //Pause
+      T: ['00:00', Validators.pattern("[0-9]{2}:[0-9]{2}")], //Time
+      C: ['gris'], // Color
+      D: [''], //Description
       V: [true] // Visibilité du créneau
     })
   }
@@ -222,10 +173,10 @@ export class FormEquipeComponent {
   /** FormArray : Gestion des éléments groupés des créneaux textes */
   private createCreneauTextGroup(): FormGroup {
     return this.fb.group({
-      cTextName: ['', Validators.required],
-      cTextColor: ['Gris'],
-      cTextHours: ['00:00', Validators.required], 
-      tDescription: [''], 
+      TN: ['', Validators.required], //Text Name
+      TC: ['Gris'], // Text Color
+      TH: ['00:00', Validators.required], // Text Hours
+      TD: [''], //Text Description
       V: [true] // Visibilité du créneau
       })
   }
@@ -245,9 +196,9 @@ export class FormEquipeComponent {
   /** FormArray : Gestion des éléments groupés deux créneaux déconseillés/interdits */
   private createDeuxGroup(): FormGroup {
     return this.fb.group({
-      creneau1: ["", Validators.required],
-      creneau2: ["", Validators.required],
-      interdit: false
+      c1: ["", Validators.required], //Creneau 1
+      c2: ["", Validators.required], //Creneau 2
+      int: false // interdit
       })
   }
 
@@ -266,10 +217,10 @@ export class FormEquipeComponent {
   /** FormArray : Gestion des éléments groupés trois créneaux déconseillés/interdits */
   private createTroisGroup(): FormGroup {
     return this.fb.group({
-      creneau1: ["", Validators.required],
-      creneau2: ["", Validators.required],
-      creneau3: ["", Validators.required],
-      interdit: false
+      c1: ["", Validators.required],
+      c2: ["", Validators.required],
+      c3: ["", Validators.required],
+      int: false
       })
   }
 
@@ -291,12 +242,12 @@ export class FormEquipeComponent {
     let begin = "";
     let end = "";
     for (let i = 0; i < this.creneauList.controls.length; i++) {
-      begin = this.creneauList.controls[i].get('cBegin')?.value;
-      end = this.creneauList.controls[i].get('cEnd')?.value;
+      begin = this.creneauList.controls[i].get('B')?.value;
+      end = this.creneauList.controls[i].get('E')?.value;
       list.push(begin + ' ' + end);
     }
     for (let i = 0; i < this.creneauTList.controls.length; i++) {
-      let name = this.creneauTList.controls[i].get('cTextName')?.value;
+      let name = this.creneauTList.controls[i].get('TN')?.value;
       list.push(name);
     }
     return list
@@ -305,10 +256,10 @@ export class FormEquipeComponent {
   public get listColorCreneaux(): string[] {
     let list = [];
     for (let i = 0; i < this.creneauList.controls.length; i++) {
-      list.push(this.creneauList.controls[i].get('cColor')?.value);
+      list.push(this.creneauList.controls[i].get('C')?.value);
     }
     for (let i = 0; i < this.creneauTList.controls.length; i++) {
-      list.push(this.creneauTList.controls[i].get('cTextColor')?.value);
+      list.push(this.creneauTList.controls[i].get('TC')?.value);
     }
     return list
   }
@@ -321,7 +272,7 @@ export class FormEquipeComponent {
 
   public errorMsgTemps: string = '';
 
-  /** Function and variables for cTextName / Nom du créneau */
+  /** Function and variables for TN / Nom du créneau */
   absences: string[] = [ 'Repos', 'Congé', 'Formation'];
   filteredAbsences$: Observable<string[]> | undefined;
 
@@ -411,7 +362,7 @@ export class FormEquipeComponent {
     }
 
     this.creneauList.controls[i].patchValue({
-      cTime: stringHTotal+':'+stringMTotal,
+      T: stringHTotal+':'+stringMTotal,
     });
 
     return stringHTotal+':'+stringMTotal
@@ -419,7 +370,7 @@ export class FormEquipeComponent {
 
   /** Fonction pour afficher les bonnes couleurs pour le formulaire de couleur */
   setCouleurInit(color: string, i: number): void {
-    let monElement = document.getElementById('buttoncTextColor' + i);
+    let monElement = document.getElementById('buttonTC' + i);
     if (monElement) {
       monElement.style.backgroundColor = color;
     }
@@ -444,15 +395,15 @@ export class FormEquipeComponent {
     }
     this.display(i, nom);
 
-    if (nom === 'cColor' ) {
+    if (nom === 'C' ) {
       let list = this.creneauList?.value;  
-      list[i]['cColor'] = color;
+      list[i]['C'] = color;
       this.equipeForm.patchValue({
         creneauHours: list
       });
-    } else if (nom === 'cTextColor') {
+    } else if (nom === 'TC') {
       let list = this.creneauTList?.value;  
-      list[i]['cTextColor'] = color;
+      list[i]['TC'] = color;
       this.equipeForm.patchValue({
         creneauText: list
       });
@@ -488,12 +439,12 @@ export class FormEquipeComponent {
     if (this.equipeForm != undefined && this.equipeForm.get('list2')?.value != undefined ){
       for (let i = 0; i < this.equipeForm.get('list2')?.value.length; i++) {
         for (let j = 0; j < this.listCreneaux.length; j++) {
-          if ( this.equipeForm.get('list2')?.value[i]['creneau1'] === this.listCreneaux[j]) {    
+          if ( this.equipeForm.get('list2')?.value[i]['c1'] === this.listCreneaux[j]) {    
             setTimeout(() => {
               this.onSelectCouleur(this.listColorCreneaux[j], i, '21');
             }, 1);
           }
-          if ( this.equipeForm.get('list2')?.value[i]['creneau2'] === this.listCreneaux[j]) {       
+          if ( this.equipeForm.get('list2')?.value[i]['c2'] === this.listCreneaux[j]) {       
             setTimeout(() => {
               this.onSelectCouleur(this.listColorCreneaux[j], i, '22');
             }, 1);
@@ -505,17 +456,17 @@ export class FormEquipeComponent {
     if (this.equipeForm != undefined && this.equipeForm.get('list3')?.value != undefined ) {
       for (let i = 0; i < this.equipeForm.get('list3')?.value.length; i++) {
         for (let j = 0; j < this.listCreneaux.length; j++) {
-          if ( this.equipeForm.get('list3')?.value[i]['creneau1'] === this.listCreneaux[j] ) {       
+          if ( this.equipeForm.get('list3')?.value[i]['c1'] === this.listCreneaux[j] ) {       
             setTimeout(() => {
               this.onSelectCouleur( this.listColorCreneaux[j], i, '31');
             }, 1);
           }
-          if ( this.equipeForm.get('list3')?.value[i]['creneau2']=== this.listCreneaux[j]) {       
+          if ( this.equipeForm.get('list3')?.value[i]['c2']=== this.listCreneaux[j]) {       
             setTimeout(() => {
               this.onSelectCouleur( this.listColorCreneaux[j], i, '32');
             }, 1);
           }
-          if ( this.equipeForm.get('list3')?.value[i]['creneau3'] === this.listCreneaux[j]) {       
+          if ( this.equipeForm.get('list3')?.value[i]['c3'] === this.listCreneaux[j]) {       
             setTimeout(() => {
               this.onSelectCouleur(this.listColorCreneaux[j], i, '33');
             }, 1);

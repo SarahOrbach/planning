@@ -42,7 +42,6 @@ exports.equipePost = async (req, res, next) => {
     const list3 = req.body.list3;
     const contraintesC = req.body.contraintesC;
     const contraintesH = req.body.contraintesH;
-    const resume = req.body.resume;
 
     try {
         const equipeDetails = {
@@ -55,7 +54,6 @@ exports.equipePost = async (req, res, next) => {
             list3: list3,
             contraintesC: contraintesC,
             contraintesH: contraintesH,
-            resume: resume,
         };
     
         const result = await Equipe.save(equipeDetails);
@@ -84,7 +82,6 @@ exports.updateEquipe = async (req, res, next) => {
     const list3 = req.body.list3;
     const contraintesC = req.body.contraintesC;
     const contraintesH = req.body.contraintesH;
-    const resume = req.body.resume;
     const id = req.body.id;
 
     try {
@@ -98,7 +95,6 @@ exports.updateEquipe = async (req, res, next) => {
             list3: list3,
             contraintesC: contraintesC,
             contraintesH: contraintesH,
-            resume: resume,
             id: id,
         };
     

@@ -131,6 +131,7 @@ export class FormEquipeComponent {
 
   // Créé la liste de collaborateurs
   fetchAll(userId: Pick<User, "id">): Observable<Collaborateur[]> {
+    console.log(userId);
     return this.collaborateurService.fetchAll(userId);
   }
 

@@ -3,28 +3,67 @@
     <nb-card-header> Créer un compte</nb-card-header>
     <nb-card-body
       ><br />
-      <nb-form-field class="element field">
-        <nb-icon nbSuffix icon="person-outline"></nb-icon>
-        <input nbInput type="text" class="input" formControlName="name" />
-      </nb-form-field>
+      <div class="div-form">
+        <nb-form-field class="element field">
+          <nb-icon nbSuffix icon="person-outline"></nb-icon>
+          <input nbInput type="text" class="input" formControlName="name" placeholder="Nom d'utilisateur"/>
+        </nb-form-field>
 
-      <nb-form-field class="element field">
-        <input
-          class="input"
-          [type]="getInputType()"
-          class="input"
-          formControlName="password"
-          nbInput
-        />
-        <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
-          <nb-icon
-            [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
-            pack="eva"
-            [attr.aria-label]="showPassword ? 'hide password' : 'show password'"
-          >
-          </nb-icon>
-        </button> </nb-form-field
-      ><br />
+        <nb-form-field class="element field">
+          <input
+            class="input"
+            [type]="getInputType()"
+            class="input"
+            formControlName="password"
+            nbInput
+            placeholder="Mot de passe"
+          />
+          <button nbSuffix nbButton ghost (click)="toggleShowPassword()">
+            <nb-icon
+              [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+              pack="eva"
+              [attr.aria-label]="showPassword ? 'hide password' : 'show password'"
+            >
+            </nb-icon>
+          </button> 
+        </nb-form-field>
+          <nb-form-field class = "element field">
+            <nb-icon nbSuffix icon="person-outline"></nb-icon>
+            <input nbInput type="text" class="input" formControlName="firstname" placeholder="Prénom"/>
+          </nb-form-field>
+    
+          <nb-form-field class = "element field">
+            <nb-icon nbSuffix icon="person-outline"></nb-icon>
+            <input nbInput type="text" class="input" formControlName="lastname" placeholder="Nom"/>
+          </nb-form-field>
+
+        <nb-form-field class="element field">
+          <nb-icon nbSuffix icon="book-outline"></nb-icon>
+          <input nbInput type="text" class="input" formControlName="company" placeholder="Nom de l'établissement" />
+        </nb-form-field>
+
+        <nb-form-field class="element field">
+          <nb-icon nbSuffix icon="email-outline"></nb-icon>
+          <input nbInput type="text" class="input" formControlName="mail" placeholder="Email"/>
+        </nb-form-field>
+
+        <nb-form-field class="element field">
+          <nb-icon nbSuffix icon="phone-outline"></nb-icon>
+          <input nbInput type="text" class="input" formControlName="phone" placeholder="Numéro de téléphone"/>
+        </nb-form-field>
+
+          <nb-form-field class="element field">
+            <nb-icon nbSuffix icon="keypad-outline"></nb-icon>
+            <input nbInput type="text" class="input" formControlName="postal" placeholder="Code postal"/>
+          </nb-form-field>
+    
+          <nb-form-field class="element field">
+            <nb-icon nbSuffix icon="home-outline"></nb-icon>
+            <input nbInput type="text" class="input" formControlName="city" placeholder="Ville"/>
+          </nb-form-field>
+      </div>
+
+      <br />
 
       <a routerLink="/login">Se connecter</a><br />
       <br />

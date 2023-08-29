@@ -36,6 +36,8 @@ export class AuthService {
     token: string; 
     userId: Pick<User, "id">;
   }> {
+    console.log(name);
+    console.log(password);
     return this.http.post<{token: string; 
       userId: Pick<User, "id">;}> (`${this.url}/login`,{name, password}, this.httpOptions).pipe(
       first(), 

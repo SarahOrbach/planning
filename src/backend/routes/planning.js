@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/:userID/:equipeID', [auth], planningController.fetch);*/
 
-router.get('/:date/:userID/:equipeID/:collaborateurID', [auth], planningController.find);
+router.get('/:date/:userID/:equipeID/:collaborateursID', [auth], planningController.find);
 
 router.post(
     '/',
@@ -22,7 +22,7 @@ router.post(
         body('user').trim().not().isEmpty(),
         body('equipeId').trim().not().isEmpty(),
         body('locked').trim(),
-        body('collaborateurId').trim(),
+        body('collaborateursId').trim(),
         body('creneau').trim(),
     ], planningController.planningPost
 );

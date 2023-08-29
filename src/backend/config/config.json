@@ -1,6 +1,6 @@
 {
-    "host": "127.0.0.1",
+    "host": "localhost",
     "user": "root",
     "database": "posts",
-    "password": "&Aa&&&&&" 
+    "password": "bft3LSOnPMt4DUy5Zhry" 
 }

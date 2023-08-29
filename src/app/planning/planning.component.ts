@@ -72,6 +72,7 @@ export class PlanningComponent implements OnInit {
   jSwap2 = 0;
   kSwap2 = 0;
   daySwap2 = new Date();
+  selectColors: { color: string }[] = [];
   
 
   constructor(
@@ -502,6 +503,8 @@ export class PlanningComponent implements OnInit {
   }
 
   onClickColor(element: string[], i: number, j: number, k: number, day: Date): void {
+    const index = i * this.equipe.collaborateursId!.length + j;
+    this.selectColors[index] = { color: element[1] };
     let monElement = document.getElementById('color'+j+ k +i+ this.Z);
 
    /* if ( element.length > 3 ) {
@@ -577,6 +580,7 @@ export class PlanningComponent implements OnInit {
   }*/
 
   setTotal(balise: string, i: number, k: number, target: number): void {
+    console.log(balise);
     const id = balise + i.toString() + k.toString() + this.Z;
     let total = '00h00';
     let daysList = this.findDaysList(k);
@@ -1676,6 +1680,13 @@ export class PlanningComponent implements OnInit {
         });
       }
     }
+  }
+
+  getTextColor(hexColor: string): string {
+    if (hexColor === '#0f7d50' || hexColor === '#0f5abe' || hexColor === '#235f6e' || hexColor === '#646464') {
+      return '#ffffff';
+    }
+    return '#000000';
   }
 
 }

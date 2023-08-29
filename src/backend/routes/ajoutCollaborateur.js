@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/:userID', [auth], ajoutCollaborateurController.fetchAll);
 
-router.get('/:userID/:collaborateurID', [auth], ajoutCollaborateurController.fetch);
+router.get('/:userID/:collaborateursID', [auth], ajoutCollaborateurController.fetch);
 
 router.post(
     '/',

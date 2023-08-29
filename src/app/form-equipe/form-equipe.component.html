@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-6 col-md-3">
           <label class="titre" for="collabs">Collaborateurs assignés</label>
           <nb-select
             multiple
@@ -185,7 +185,7 @@
                       type="text"
                       id="P + {{ i }}"
                       formControlName="P"
-                      class="form-control contenu"
+                      class="form-control contenu pause"
                       [ngClass]="{
                         'is-invalid': getControls(creneau, 'P')
                       }"
@@ -260,7 +260,7 @@
 
       <!-- Troisièmre partie : ajout de créneaux texte -->
       <div class="row" id="card" formArrayName="creneauText">
-        <div class="header"><h3>Shift Texte</h3></div>
+        <div class="header"><h3>Shift Statuts</h3></div>
 
         <div *ngIf="creneauTList.controls.length > 0">
           <div *ngFor="let text of creneauTList.controls; let i = index">
@@ -446,7 +446,7 @@
                       <nb-icon icon="trash-2-outline"></nb-icon>
                     </button>
                   </div>
-                  <div class="col-sm-5 col-md-3">
+                  <div class="col-sm-5 col-md-2">
                     <label class="titre" attr.for="'21' + {{ i }}"
                       >Shift jour J</label
                     >
@@ -467,7 +467,7 @@
                       </option>
                     </select>
                   </div>
-                  <div class="col-sm-5 col-md-3">
+                  <div class="col-sm-5 col-md-2">
                     <label class="titre" attr.for="'22' + {{ i }}"
                       >Shift jour J+1</label
                     >
@@ -488,7 +488,10 @@
                       </option>
                     </select>
                   </div>
-                  <div class="col-sm-4 col-md-2">
+                  <div class="col-sm-5 col-md-2">
+                    <!--placeholder-->
+                  </div>
+                  <div class="col-sm-3 col-md-2">
                     <label class="titre" attr.for="autoriser + {{ i }}"
                       >Succession de shifts</label
                     >

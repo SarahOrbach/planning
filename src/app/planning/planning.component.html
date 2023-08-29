@@ -14,26 +14,16 @@
 <nb-card class="row" *ngIf="equipeId">
   <!-- Première colonne : nom de l'équipe et noms des collaborateurs -->
   <nb-card-body class="row">
-    <nb-card-body class="col-sm-3 col-md-2">
+    <nb-card-body class="col-sm-3 col-md-custom">
       <div
         class="grid-container-row"
         *ngIf="equipe != undefined && equipe.collaborateursId != undefined"
       >
         <div class="grid-item-equipe-titre">
           <h2>
-            <button
-              size="small"
-              class="bottom"
-              nbButton
-              ghost
-              type="button"
-              (click)="open()"
-            >
-              <nb-icon icon="trash-2-outline"></nb-icon>
-            </button>
             <div>{{ equipe.name }}</div>
             <a routerLink="/detail/{{ equipe.id }}"
-              ><nb-icon icon="edit-2-outline"></nb-icon
+              ><nb-icon icon="edit-2-outline" class="icon-next-to-team-name"></nb-icon
             ></a>
           </h2>
         </div>
@@ -86,10 +76,11 @@
                         "
                         class="grid-container-row"
                       >
-                        <div class="grid-item-name">{{ creneau }}</div>
+                        <div *ngIf="creneau === 'Total Horaire'" class="grid-item-name"># heures</div>
+                        <div *ngIf="creneau !== 'Total Horaire'" class="grid-item-name">{{ creneau.replace(' ', '&nbsp;&nbsp;') }}</div>
 
                         <div
-                          class="grid-item contrainte"
+                          class="grid-item-custom contrainte"
                           *ngFor="
                             let collaborateur of equipe.collaborateursId;
                             let i = index
@@ -127,7 +118,7 @@
                   <div class="grid-container">
                     <!-- Troisième colonne : contraintes de l'équipe, list des noms des contraintes -->
                     <div>
-                      <!-- Saubegarde du calendrier -->
+                      <!-- Sauvegarde du calendrier -->
                       <div class="grid-item-empty">
                         <button
                           class="valider"
@@ -201,7 +192,7 @@
                           "
                         >
                           <div class="grid-item-prompt-contrainteH">
-                            {{ creneau[0] }}
+                            {{ creneau[0].replace(' ', '&nbsp;&nbsp;') }}
                           </div>
                         </div>
                       </div>
@@ -267,19 +258,23 @@
                             (dragover)="allowDrop($event, j, k, i)"
                             (dragleave)="leaveDrop($event, j, k, i)"
                           >
-                            <select
-                              id="color{{ j }}{{ k }}{{ i }}{{ Z }}"
-                              class="form-control select"
-                              formControlName="creneau"
-                              [disabled]="true"
-                            >
+                          <select
+                          id="color{{ j }}{{ k }}{{ i }}{{ Z }}"
+                          [ngStyle]="{
+                            'color': selectColors[i * equipe.collaborateursId.length + j]?.color ? getTextColor(selectColors[i * equipe.collaborateursId.length + j].color) : ''
+                          }"
+                          class="form-control select"
+                          formControlName="creneau"
+                          [disabled]="true"
+                        >
                               <option
                                 id="{{ creneau[0] }}{{ j }}{{ k }}{{ i }}{{
                                   Z
                                 }}"
                                 *ngFor="let creneau of creneauList"
                                 [ngStyle]="{
-                                  'background-color': creneau[1]
+                                  'background-color': creneau[1],
+                                  'color': getTextColor(creneau[1])
                                 }"
                                 [value]="creneau"
                                 (click)="onClickColor(creneau, i, j, k, day)"
@@ -289,14 +284,14 @@
                                   ]['locked']
                                 "
                               >
-                                {{ creneau[0] }}
+                                {{ creneau[0].replace(' ', '&nbsp;&nbsp;') }}
                               </option>
                             </select>
 
                             <button
                               type="button"
                               class="buttonLock"
-                              size="tiny"
+                              size="small"
                               id="button{{ j }}{{ k }}{{ i }}{{ Z }}"
                               (click)="lock(j, k, i)"
                             >
@@ -349,7 +344,7 @@
                                 class="contrainteCollab"
                                 id="time{{ k }}{{ i }}{{ j }}{{ Z }}"
                               ></div>
-                              <div class="contrainteCollab">
+                              <div class="contrainteParams">
                                 {{ contraintesHList[j][i + 1] }}
                               </div>
                             </div>

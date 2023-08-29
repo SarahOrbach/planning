@@ -24,6 +24,13 @@ export class SignupComponent {
     return new FormGroup({
       name: new FormControl("", [Validators.required, Validators.minLength(2)]),
       password: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      firstname: new FormControl("", [Validators.required, Validators.minLength(2)]),
+      lastname: new FormControl("", [Validators.required, Validators.minLength(2)]),
+      company: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*')]),
+      mail: new FormControl('', [Validators.required, Validators.email]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('[0-9]*')]),
+      postal: new FormControl('', [Validators.required, Validators.pattern('[0-9]*')]),
+      city: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]*')]),
     })
   }
 
@@ -33,7 +40,6 @@ export class SignupComponent {
                       .subscribe( () => this.router.navigate(["/login"]));
     }
   }
-  
   auth(): boolean {
     return window.location.href.indexOf('login') === -1
   }

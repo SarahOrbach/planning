@@ -148,7 +148,7 @@
             class="shift-button"
             type="button"
           >
-            Shifts textes
+            Shifts Statuts
           </button>
         </nb-card-header>
         <nb-card-body
@@ -246,7 +246,7 @@
                     type="text"
                     id="P + {{ i }}"
                     formControlName="P"
-                    class="form-control contenu"
+                    class="form-control contenu pause"
                     [ngClass]="{
                       'is-invalid': getControls(creneau, 'P')
                     }"
@@ -558,7 +558,7 @@
 
       <nb-card class="nb-card">
         <nb-card-header class="titreSection">
-          Contraintes Collaborateur
+          Paramètres Collaborateurs
         </nb-card-header>
         <nb-card-body>
           <table class="contrainte">
@@ -583,9 +583,11 @@
                 </button>
                 {{ creneau }}
               </td>
-              <td class="contrainte-grid">
-                <select (change)="onCreneauAdd($event)">
-                  <option>Total Horaire</option>
+              <td class="contrainte-grid-2">
+                <select (change)="onCreneauAdd($event)"
+                  class="form-control contenu"
+                >
+                  <option>Total horaire</option>
                   <option
                     *ngFor="let cA1 of listCreneaux; let c = index"
                     [value]="cA1"
@@ -614,7 +616,7 @@
                 "
               >
                 <input
-                  class="contrainte-input"
+                  class="form-control contenu"
                   type="text"
                   value="{{ initialValue(collaborateur, creneau) }}"
                   (focusout)="setContrainte($event, collaborateur, creneau)"
@@ -627,7 +629,7 @@
 
       <nb-card class="nb-card">
         <nb-card-header class="titreSection">
-          Contraintes Entreprise
+          Paramètres Entreprise
         </nb-card-header>
         <nb-card-body>
           <table class="contrainte">
@@ -660,7 +662,7 @@
                 *ngFor="let jour of semaine; let j = index"
               >
                 <input
-                  class="contrainte-input"
+                  class="form-control contenu"
                   type="text"
                   value="{{ initialValueHoraire(j, horaire) }}"
                   (focusout)="setContrainteHoraire($event, j, horaire)"
@@ -687,7 +689,7 @@
                 *ngFor="let jour of [1, 2, 3, 4, 5, 6, 0]; let j = index"
               >
                 <input
-                  class="contrainte-input"
+                  class="form-control contenu"
                   type="text"
                   value="{{ initialValueHoraire(j, creneau) }}"
                   (focusout)="setContrainteHoraire($event, j, creneau)"
@@ -698,13 +700,15 @@
             <tr>
               <td class="contrainte-grid">
                 <input
-                  class="contrainte-input"
+                  class="form-control contenu"
                   type="time"
                   (focusout)="onHoraireAdd($event)"
                 />
               </td>
               <td class="contrainte-grid">
-                <select (change)="onHoraireAdd($event)">
+                <select (change)="onHoraireAdd($event)"
+                  class="form-control contenu horaire"
+                >
                   <option
                     *ngFor="let cA1 of listCreneaux; let c = index"
                     [value]="cA1"

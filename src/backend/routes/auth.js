@@ -18,7 +18,14 @@ router.post(
                     return Promise.reject('Ce nom existe déjà.')
                 }
             }),
-        body('password').trim().isLength({ min: 4 })
+        body('password').trim().isLength({ min: 4 }),
+        body('firstname'),
+        body('lastname'),
+        body('company'),
+        body('mail'),
+        body('phone'),
+        body('postal'),
+        body('city'),
     ], authController.signup
 );
 

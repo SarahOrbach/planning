@@ -109,6 +109,7 @@ app-login-header {
     min-width: 30px;
     margin: 2px;
     border-radius: 3px;
+    width:110px
 }
 
 .choixJours {
@@ -122,16 +123,13 @@ app-login-header {
 .pickDate {
     border: 1px solid rgb(250, 250, 250);
     border-radius: 3px;
-    max-width: 100px;
     margin: 4px;
-    padding-right: 15px;
+    width: 125px;
 }
 
 .semaine {
-    border: 1px solid rgb(250, 250, 250);
     background-color:rgb(250, 250, 250);
     margin: 3px;
-    padding-right: 45px;
     max-width: 100px;
     margin-right: 10px;
     margin-left: 10px;

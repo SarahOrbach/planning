@@ -11,7 +11,7 @@ import { Planning } from '../models/planning';
   providedIn: 'root'
 })
 export class PlanningService {
-  private url = "http://127.0.0.1:3000/planning";
+  private url = "http://162.19.25.189:3333/planning";
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders ({ "Content-Type": "application/json"}),

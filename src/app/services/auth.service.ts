@@ -11,7 +11,7 @@ import { User } from "../models/user";
   providedIn: 'root'
 })
 export class AuthService {
-  private url = "http://127.0.0.1:3000/auth";
+  private url = "http://162.19.25.189:3333/auth";
 
   isUserLoggedIn$ = new BehaviorSubject<boolean>(false);
   userId!: Pick<User, "id">;
@@ -26,6 +26,8 @@ export class AuthService {
     private router: Router) { }
 
   signup(user: Omit<User, "id">): Observable<User> {
+    console.log("user", user);
+    console.log("JUser", JSON.stringify(user));
     return this.http.post<User>(`${this.url}/signup`, user, this.httpOptions).pipe(
       first(), 
       catchError(this.errorHandlerService.handleError<User>("signup"))
@@ -36,8 +38,8 @@ export class AuthService {
     token: string; 
     userId: Pick<User, "id">;
   }> {
-    console.log(name);
-    console.log(password);
+    console.log('user login', name);
+    console.log('password login', password);
     return this.http.post<{token: string; 
       userId: Pick<User, "id">;}> (`${this.url}/login`,{name, password}, this.httpOptions).pipe(
       first(), 

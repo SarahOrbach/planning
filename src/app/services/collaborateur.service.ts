@@ -12,7 +12,7 @@ import { Collaborateur } from './../models/collaborateur';
 })
 
 export class CollaborateurService {
-  private url = "http://127.0.0.1:3000/ajoutCollaborateur";
+  private url = "http://162.19.25.189:3333/ajoutCollaborateur";
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders ({ "Content-Type": "application/json"}),

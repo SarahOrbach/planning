@@ -14,12 +14,13 @@ module.exports = class User {
     }
 
     static find(name) {
-        return db.execute('SELECT * FROM users WHERE name = ?', [name]);
+        return db.execute('SELECT * FROM user WHERE name = ?', [name]);
     }
 
     static save(user) {
+        console.log('save', user);
         return db.execute(
-            'INSERT INTO users (name, password, firstname, lastname, company, mail, phone, postal, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            'INSERT INTO user (name, password, firstname, lastname, company, mail, phone, postal, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
             [user.name, user.password, user.firstname, user.lastname, user.company, user.mail, user.phone, user.postal, user.city]
         )
     }

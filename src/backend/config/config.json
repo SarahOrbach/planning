@@ -1,6 +1,7 @@
 {
-    "host": "localhost",
-    "user": "root",
-    "database": "posts",
-    "password": "bft3LSOnPMt4DUy5Zhry" 
+    "host": "127.0.0.1",
+    "port": "3306",
+    "user": "planeez841",
+    "database": "planeez841",
+    "password": "Osarah5656" 
 }

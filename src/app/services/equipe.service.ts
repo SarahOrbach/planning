@@ -12,7 +12,7 @@ import { Equipe } from './../models/equipe';
   providedIn: 'root'
 })
 export class EquipeService {
-  private url = "http://127.0.0.1:3000/ajoutEquipe";
+  private url = "http://162.19.25.189:3333/ajoutEquipe";
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders ({ "Content-Type": "application/json"}),

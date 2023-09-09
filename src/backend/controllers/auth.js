@@ -8,9 +8,9 @@ const User = require('../models/user');
 
 exports.signup = async (req, res, next) => {
     const errors = validationResult(req);
+    console.log('signup', req.body);
 
-    if (!errors.isEmpty()) return
-
+    //if (!errors.isEmpty()) return
     const name = req.body.name;
     const password = req.body.password;
     const firstname = req.body.firstname;
@@ -23,7 +23,6 @@ exports.signup = async (req, res, next) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, 12);
-    
         const userDetails = {
             name: name,
             password: hashedPassword,
@@ -35,9 +34,7 @@ exports.signup = async (req, res, next) => {
             postal: postal,
             city: city
         };
-    
         const result = await User.save(userDetails);
-    
         res.status(201).json({ message: 'Compte enregistré !'});
     } catch (err) {
         if (!err.statusCode) {
@@ -48,11 +45,15 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
+    console.log('login1');
     const name = req.body.name;
     const password = req.body.password;
+    console.log('login', req.body);
+   
 
     try {
         const user = await User.find(name);
+        console.log('user', user[0], user[1], user);
 
         if (user[0].length !== 1) {
             const error = new Error('Utilisateur non trouvé.')

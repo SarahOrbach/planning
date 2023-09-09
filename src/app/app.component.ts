@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
       this.isAuthenticated = isLoggedIn;
       if (!this.isAuthenticated ) {
         console.log('non Authenticated');
-         this.router.navigate(["/login"]);
+        this.router.navigate(["/login"]);
       } else {
         console.log('authenticated');
         this.userId = this.authService.userId;
